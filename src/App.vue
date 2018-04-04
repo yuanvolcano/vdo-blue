@@ -1,23 +1,27 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import './assets/js/flexible_css.debug.js'
+import './assets/js/flexible.debug.js'
+
 export default {
   name: 'App'
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped lang='stylus' rel='stylesheet/stylus'>
+  @import "assets/stylus/variable.styl"
+
+  #app
+    color $color-text-footer
+    width 100%
+    height 100%
+</style>
+
+<style lang="less">
+@import '~vux/src/styles/reset.less';
 </style>

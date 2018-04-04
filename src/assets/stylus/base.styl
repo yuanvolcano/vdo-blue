@@ -1,0 +1,177 @@
+@import "variable.styl"
+@import "mixin.styl"
+
+body, html
+  line-height: 1
+  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
+  user-select: none
+  -webkit-tap-highlight-color: transparent
+  background: $color-text
+  color: $color-text
+  height 100%
+
+.back, .back-black
+  left 1.66rem
+  top 2.67rem
+  width 1.66rem
+  height 2.83rem
+  bg-image('../images/arrows_white')
+  background-position center center
+  extend-click()
+  position absolute
+
+.yd-slider-pagination-item
+    width 1.5rem
+    height 1.5rem
+    margin 0.2em
+
+
+.clearfix:after
+  content "."
+  clear both
+  display block
+  height 0
+  overflow hidden
+  visibility hidden
+
+.clearfix
+  zoom 1
+
+.group
+  margin-top 3.5rem
+  .weui-cells
+    background-color #f4f4f4
+    .ipt
+      line-height 5.33rem
+      font-size 2.33rem
+      .weui-input
+        color #ccc
+      .weui-icon-clear, .weui-icon-search
+        font-size 2.33rem !important;
+    .vux-input-icon.weui-icon-success:before, .vux-input-icon.weui-icon-warn:before, .vux-x-input .vux-input-icon
+      font-size 2.33rem
+    .user-email-img
+      margin-left 0.67rem
+      margin-right 3rem
+      height 4.67rem
+      width 4.67rem
+.weui-toast .weui-toast__content
+  font-size 2.33rem
+
+body .vux-tab .vux-tab-item
+  font-size 2.67rem
+
+.back-black
+  bg-image('../images/arrows')
+
+.pwd-img
+  bg-image('../images/password')
+
+.email-img
+  bg-image('../images/email')
+
+.security-img
+  bg-image('../images/security')
+
+.home-img
+  bg-image('../images/home_pre_copy2')
+
+.vip-img
+  bg-image('../images/shape_copy')
+
+.person-img
+  bg-image('../images/my')
+
+.collect-img
+  bg-image('../images/collect')
+
+.collect-active-img
+  bg-image('../images/collect_pre')
+
+.message-img
+  bg-image('../images/message')
+
+.feedback-img
+  bg-image('../images/feedback')
+
+.pwdchange-img
+  bg-image('../images/pwdchange')
+
+.setting-img
+  bg-image('../images/setting')
+
+.next-img
+  bg-image('../images/next')
+
+.message-center-img
+  bg-image('../images/message-center')
+
+.gou-img
+  bg-image('../images/_gou')
+
+.nian-img
+  bg-image('../images/nian')
+
+.da-img
+  bg-image('../images/da')
+
+.ji-img
+  bg-image('../images/ji')
+
+.alipay-img
+  bg-image('../images/bitmap')
+
+.vip-id-img
+  bg-image('../images/_vip')
+
+.collect-id-img
+  bg-image('../images/_collect')
+
+.player-img
+  bg-image('../images/_player')
+
+.synchronization-img
+  bg-image('../images/_synchronization')
+
+.portrait-img
+  bg-image('../images/portrait')
+
+.del-img
+  bg-image('../images/portrait')
+
+.change-img
+  bg-image('../images/change')
+  // extend-click()
+
+.agree-img
+  background-size 100%
+  bg-image('../images/like')
+
+.agree-active-img
+  background-size 100%
+  bg-image('../images/like_pre')
+  
+.disagree-img
+  background-size 100%
+  bg-image('../images/dislike')
+
+.disagree-active-img
+  background-size 100%
+  bg-image('../images/dislike_pre')
+
+.edit-img
+  bg-image('../images/edit')
+
+.logout-img
+  bg-image('../images/logout')
+
+.login-img
+  background-size 100%
+  bg-image('../images/bgmap')
+
+.logo-img
+  background-size 100%
+  bg-image('../images/logo')
+
+.blue-img
+  bg-image('../images/bluelive')
