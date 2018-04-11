@@ -1,9 +1,9 @@
 <template>
-  <div class="wrapper">
+  <div class="starList">
     <div class="list">
       <div v-if="items.title" class="title">
         <span class="title-txt" v-text="items.title"></span>
-        <span class="title-arrow next-img"></span>
+        <span class="title-arrow next-img" @click="goNext"></span>
       </div>
       <div class="body">
         <div v-for="(item, index) in items.list" @click="handlClick(item)" :key="index" class="item">
@@ -22,9 +22,10 @@
           </div>
         </div>
       </div>
-      <div v-if="isChange" @click="loadmore" class="footer">
+      <div v-if="isChange && items.list.length" @click="loadmore" class="footer">
         <div class="change-img change"></div>
       </div>
+      <div class="default" v-if="!items.list.length">{{items.text}}</div>
     </div>
   </div>
 </template>
@@ -46,6 +47,9 @@ export default {
     },
     handlClick (item) {
       this.$emit('to-star', item)
+    },
+    goNext () {
+      this.$emit('next')
     }
   }
 }
@@ -54,7 +58,7 @@ export default {
 <style lang="stylus" scoped>
 @import '~assets/stylus/mixin.styl'
 
-  .wrapper
+  .starList
     width 100%
     // padding-bottom 8.17rem
     .list
@@ -141,4 +145,9 @@ export default {
         height 5rem
         width 5rem
         margin 0 auto
+    .default
+      text-align center
+      font-size 2.83rem
+      color #666
+      margin-top 2.5em
 </style>

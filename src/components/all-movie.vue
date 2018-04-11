@@ -1,13 +1,13 @@
 <template>
-  <div class="wrapper">
+  <div class="allMovie">
     <header-bar :title="title"></header-bar>
     <div class="body">
-      <tab :line-width=0 active-color='#F55640' v-model="index">
+      <tab class="tab" :line-width=0 active-color='#F55640' v-model="index">
         <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list" @click="demo2 = item" :key="index">{{item}}</tab-item>
       </tab>
-      <swiper v-model="index" height="100px" :show-dots="false">
-        <swiper-item v-for="(item, index) in list" :key="index">
-          <div class="tab-swiper vux-center">{{item}} Container</div>
+      <swiper :threshold="threshold" class="active" v-model="index" :height="setHeight" :show-dots="false">
+        <swiper-item class="swiper-item" v-for="(item, index) in list" :key="index">
+          <video-list @to-play="getPlayer" :items='videos[index]' @load="loadVdo"></video-list>
         </swiper-item>
       </swiper>
       <!-- <tab class="tab" :line-width=0 active-color='#F55640' v-model="defaultkey" ref="tabs">
@@ -17,9 +17,9 @@
         <swiper-item class="swiper-item" v-for="(item, index) in list" :key="index">
           <video-list @to-play="getPlayer" :items='videos[index]' @load="loadVdo"></video-list>
         </swiper-item>
-      </swiper>
+      </swiper> -->
       <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
-      <loading v-model="loading" :text="text"></loading> -->
+      <loading v-model="loading" :text="text"></loading>
     </div>
   </div>
 </template>
@@ -59,10 +59,12 @@ export default {
   },
   data () {
     return {
+      threshold: 50,
       title: '电影',
       list: list(),
+      index: 0,
       defaultkey: 0,
-      pagesArr: [1, 1, 1, 1, 1, 1, 1],
+      pagesArr: [1, 1, 1, 1, 1, 1],
       demo2: '最热',
       tips: {
         show: false,
@@ -73,12 +75,17 @@ export default {
       },
       loading: false,
       text: '正在加载',
-      videos: videoData(7),
+      videos: videoData(6),
       setHeight: setHeight
     }
   },
+  activated () {
+    // this.index = this.$route.params.key
+  },
   created () {
-    for (let j = 0; j < 7; j++) {
+    // console.log(this.$route)
+    this.index = Number(this.$route.params.id)
+    for (let j = 0; j < 6; j++) {
       this._getVideoSortList({type: j + 1, page: this.pagesArr[j]})
     }
   },
@@ -128,8 +135,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.wrapper
+.allMovie
   width 100%
+  height 100%
+  z-index 10
+  position fixed
+  left 0
+  top 0
   .body
     margin-top 9.17rem
     // background-color #ccc

@@ -99,12 +99,14 @@ export default new Router({
       component: resolve => require(['components/starer'], resolve)
     },
     {
-      path: '/allStar/:key',
+      path: '/allStar/:id',
+      name: 'allStar',
       meta: {requiresAuth: true},
       component: resolve => require(['components/all-star'], resolve)
     },
     {
-      path: '/allMovie/:key',
+      path: '/allMovie/:id',
+      name: 'allMovie',
       meta: {requiresAuth: true},
       component: resolve => require(['components/all-movie'], resolve)
     }

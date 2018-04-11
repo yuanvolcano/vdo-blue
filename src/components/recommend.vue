@@ -3,8 +3,8 @@
     <search-bar @focus="focusHandle"></search-bar>
     <swiper :list="list" :auto="true" :height="'36rem'" :loop="true"></swiper>
     <div class="recommend-content">
-      <video-list @to-play="getPlayer" :items='vdoItems' @load="loadVdo"></video-list>
-      <star-list @to-star="getStarer" :items='starItems' @load="loadStar"></star-list>
+      <video-list @to-play="getPlayer" :items='vdoItems' @load="loadVdo" @next="nextMovie"></video-list>
+      <star-list @to-star="getStarer" :items='starItems' @load="loadStar" @next="nextStar"></star-list>
     </div>
     <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
     <loading v-model="loading" :text="text"></loading>
@@ -65,6 +65,12 @@ export default {
       setStarInfo: 'SET_STARITEM',
       setVdoInfo: 'SET_VDOITEM'
     }),
+    nextMovie () {
+      this.$router.push({name: 'allMovie', params: {id: 0}})
+    },
+    nextStar () {
+      this.$router.push({name: 'allStar', params: {id: 0}})
+    },
     loadVdo () {
       this.videoPage++
       this._getRecommendVideo({videoPage: this.videoPage, rows: this.rows, loadmore: true})

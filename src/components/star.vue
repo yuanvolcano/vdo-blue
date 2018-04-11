@@ -3,7 +3,7 @@
     <search-bar @focus="focusHandle" :toggle="toggle" @quick="quickClick" @all="allClick"></search-bar>
     <swiper :list="list" :auto="true" :height="'36rem'" :loop="true"></swiper>
     <div class="star-content">
-      <star-list v-for="(data, k) in starData" :key="k" :items='data' @to-star="getStarer" @load="loadStar(k)"></star-list>
+      <star-list v-for="(data, k) in starData" :key="k" @next="next(k)" :items='data' @to-star="getStarer" @load="loadStar(k)"></star-list>
     </div>
     <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
     <loading v-model="loading" :text="text"></loading>
@@ -70,11 +70,15 @@ export default {
     ...mapMutations({
       setStarInfo: 'SET_STARITEM'
     }),
+    next (index) {
+      index = index + 2
+      this.$router.push({name: 'allStar', params: {id: index}})
+    },
     quickClick () {
-      this.$router.push({path: '/allStar/1'})
+      this.$router.push({path: '/allStar/0'})
     },
     allClick () {
-      this.$router.push({path: '/allStar/1'})
+      this.$router.push({path: '/allStar/0'})
     },
     getStarer (item) {
       this.$router.push({

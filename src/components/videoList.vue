@@ -1,9 +1,9 @@
 <template>
-  <div class="wrapper" >
+  <div class="videoList" >
     <div class="list">
       <div v-if="items.title" class="title">
         <span class="title-txt">{{items.title}}</span>
-        <span v-if="next" class="title-arrow next-img"></span>
+        <span v-if="next" @click="goNext" class="title-arrow next-img"></span>
       </div>
       <div class="body">
         <div :key="index" v-for="(item, index) in items.list" @click="clickHandle(item)" class="item" :class="className.item">
@@ -53,6 +53,9 @@ export default {
     }
   },
   methods: {
+    goNext () {
+      this.$emit('next')
+    },
     clickHandle (item) {
       this.$emit('to-play', item)
     },
@@ -66,7 +69,7 @@ export default {
 <style lang="stylus" scoped>
 @import '~assets/stylus/mixin.styl'
 
-.wrapper
+.videoList
   width 100%
   // padding-bottom 8.17rem
   .title

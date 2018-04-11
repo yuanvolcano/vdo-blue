@@ -1,12 +1,13 @@
 <template>
   <div class="wrapper">
-    <search-bar @focus="focusHandle" @all="allCLick" :toggle="toggle"></search-bar>
+    <search-bar @focus="focusHandle" @quick="quickClick" @all="allCLick" :toggle="toggle"></search-bar>
     <swiper :list="list" :auto="true" :height="'36rem'" :loop="true"></swiper>
     <div class="movie-content">
-      <video-list v-for="(data, k) in videoData" :key="k" :items='data' @to-play="getPlayer" @load="loadVdo(k)"></video-list>
+      <video-list v-for="(data, k) in videoData" :key="k" :items='data' @next="next(k)" @to-play="getPlayer" @load="loadVdo(k)"></video-list>
     </div>
     <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
     <loading v-model="loading" :text="text"></loading>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -72,8 +73,14 @@ export default {
     ...mapMutations({
       setVdoInfo: 'SET_VDOITEM'
     }),
+    next (index) {
+      this.$router.push({name: 'allMovie', params: {id: index}})
+    },
+    quickClick () {
+      this.$router.push({path: '/allMovie/0'})
+    },
     allCLick () {
-      this.$router.push({path: '/allMovie/1'})
+      this.$router.push({path: '/allMovie/0'})
     },
     loadVdo (index) {
       this.videoPage++

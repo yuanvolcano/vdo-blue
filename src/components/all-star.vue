@@ -2,14 +2,22 @@
   <div class="wrapper">
     <header-bar :title="title"></header-bar>
     <div class="body">
-      <tab class="tab" :line-width=0 active-color='#F55640' v-model="index" ref="tabs">
+       <tab class="tab" :line-width=0 active-color='#F55640' v-model="index">
+        <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list" @click="demo2 = item" :key="index">{{item}}</tab-item>
+      </tab>
+      <swiper :threshold="threshold" v-model="index" :height="setHeight" :show-dots="false">
+        <swiper-item v-for="(item, index) in list" :key="index">
+           <star-list @to-star="getStarer" :items='starData[index]' @load="loadStar"></star-list>
+        </swiper-item>
+      </swiper>
+      <!-- <tab class="tab" :line-width=0 active-color='#F55640' v-model="index" ref="tabs">
         <tab-item v-for="(item, index) in list" @on-item-click="clickToggle" @click="demo2 = item" :key="index">{{item}}</tab-item>
       </tab>
-      <swiper class="swiper" :height="setHeight" v-model="index" :show-dots="false">
+      <swiper :height="setHeight" v-model="index" :show-dots="false">
         <swiper-item class="swiper-item" v-for="(item, index) in list" :key="index">
           <star-list @to-star="getStarer" :items='starList' @load="loadStar"></star-list>
         </swiper-item>
-      </swiper>
+      </swiper> -->
       <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
       <loading v-model="loading" :text="text"></loading>
     </div>
@@ -25,6 +33,14 @@ import {toast} from 'base/util'
 import {mapMutations} from 'vuex'
 
 const list = () => ['最热', '最新', '亚洲', '欧美', '原创', '日本', '随机']
+const starData = (n) => {
+  let arr = []
+  for (let i = 0; i < n; i++) {
+    let obj = {title: '', list: [], text: ''}
+    arr.push(obj)
+  }
+  return arr
+}
 
 const clientHeight = document.body.clientHeight;
 const fontSize = document.documentElement.style.fontSize.replace(/px/, '')
@@ -43,6 +59,7 @@ export default {
   },
   data () {
     return {
+      threshold: 50,
       title: '明星',
       list: list(),
       index: 0,
@@ -60,11 +77,15 @@ export default {
       starList: {
         list: []
       },
+      starData: starData(7),
       setHeight: setHeight
     }
   },
   created () {
-    this._getStarSortList({type: this.index + 1, page: this.pagesArr[this.index]})
+    this.index = Number(this.$route.params.id)
+    for (let j = 0; j < 7; j++) {
+      this._getStarSortList({type: j + 1, page: this.pagesArr[j]})
+    }
   },
   methods: {
     ...mapMutations({
@@ -90,12 +111,14 @@ export default {
         page: param.page,
         rows: 9
       }).then(result => {
+        this.starData[param.type - 1].list.length = 0
         if (result.status === 1) {
           if (result.data.starList.length !== 0) {
-            this.starList.list = result.data.starList
+            this.starData[param.type - 1].list = result.data.starList
           } else {
             param.page--
             toast('没有更多的明星了哦', this.tips)
+            this.starData[param.type - 1].text = '没有找到明星'
           }
         } else {
           toast(result.msg, this.tips)
