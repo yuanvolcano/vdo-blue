@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="service">
     <div class="blue blue-img"></div>
     <div class="protocol">
       <h2 class="title">
@@ -36,8 +36,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.wrapper
+.service
   width 100%
+  height 100%
+  overflow auto
   .blue
     height 34.5rem
     width 100%

@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="box">
       <span class="edit edit-img"></span>
-      <input placeholder="写评论。。。" v-model="value" class="edit-ipt" type="text">
+      <input placeholder="写评论。。。" @focus="focus" v-model="value" class="edit-ipt" type="text">
     </div>
     <div class="publish" @click="publish">发表</div>
   </div>
@@ -18,6 +18,10 @@ export default {
   methods: {
     publish () {
       this.$emit('publish', this.value)
+      this.value = ''
+    },
+    focus () {
+      this.$emit('focus')
     }
   }
 }

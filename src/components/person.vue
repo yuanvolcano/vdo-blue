@@ -99,10 +99,14 @@ export default {
       logOutAction._post().then(result => {
         if (result.status === 1) {
           window.sessionStorage.removeItem('token')
-          // this.setLogin({})
           this.$router.push({path: '/login'})
         } else {
-          toast(result.msg, this.tips);
+          toast(result.msg, this.tips)
+          if (result.status === -1) {
+            window.setTimeout(() => {
+              this.$router.push({path: '/login'})
+            }, 100)
+          }
         }
       })
     }
@@ -135,6 +139,7 @@ export default {
         height 10.5rem
         border-radius 50%
         background-color #fff
+        background-size 10.5rem !important
       .personal-intro
         float left
         margin-left 2.5rem
@@ -162,30 +167,29 @@ export default {
       height 8.5rem
       border-bottom 2px solid #F0F0F0;
       background-color #fff
+      display flex
+      align-items center
       .item-img
-        float left
         margin-left 2.75rem
-        margin-top 1.83rem
         height: 4rem
         width: 4rem
         background-position center
         background-repeat no-repeat
       .item-txt
-        float left
         margin-left 1.92rem
         font-family PingFangSC-Regular
         font-size 2.5rem
         color #333333
         line-height 8.5rem
+        flex 1 1
       .item-next
-        float right
-        width 3.5em
+        width 3.5rem
         height 3.5rem
         margin-right 1.67rem
-        margin-top 2.48rem
         extend-click()
   .logout
-    width 100%
+    width 5rem
     height 5rem
+    margin 0 auto
     background-size contain
 </style>

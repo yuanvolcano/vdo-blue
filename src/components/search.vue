@@ -9,7 +9,9 @@
       <div class="search-cancel" @click="goBack">取消</div>
     </div>
     <txt-block v-show="isShortCut" @cell-click="clickHandle" v-for="(item, index) in items" :key="index" :data="item"></txt-block>
-    <search-list v-show="!isShortCut" :data="searchResult"></search-list>
+    <search-list v-show="!isShortCut" :data="searchResult" @select="select"></search-list>
+    <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
+    <loading v-model="loading" :text="text"></loading>
   </div>
 </template>
 
@@ -17,27 +19,39 @@
 import txtBlock from './txt-block'
 import searchList from './search-list'
 import {searchVideo} from 'api'
+import {toast} from 'base/util'
+import {Loading, Toast} from 'vux'
 
 export default {
-  components: {txtBlock, searchList},
+  components: {txtBlock, searchList, Loading, Toast},
   data () {
     return {
+      tips: {
+        show: false,
+        width: '25rem',
+        type: 'text',
+        position: 'middle',
+        text: ''
+      },
+      loading: false,
+      text: '正在加载',
       placeholder: '搜索你想要的',
       query: '',
-      isShortCut: true,
+      isShortCut: false,
       items: {
         history: {
-          title: '历史搜素',
+          title: '历史搜索',
           del: true,
           list: ['濑亚美莉', '西游记', '濑亚美莉', '西游降魔篇', '冷面焊枪', '网吧天子', '濑亚美莉', '西游记']
         },
         hot: {
-          title: '历史搜素',
+          title: '历史搜索',
           del: true,
           list: ['濑亚美莉', '西游记', '濑亚美莉', '西游降魔篇', '冷面焊枪', '网吧天子', '濑亚美莉', '西游记']
         }
       },
       searchResult: {
+        text: '当前搜索为空',
         list: [
           // {
           //   title: '王宝强速报，惊现宝强前妻马蓉和其经纪人老王大战，一分钟短视频',
@@ -51,8 +65,11 @@ export default {
     }
   },
   methods: {
+    select (item) {
+      console.log(item)
+      this.$router.push({path: `/player/${item.id}`})
+    },
     searchQuery () {
-      console.log(1)
       searchVideo._post({
         content: this.query,
         page: 1,
@@ -60,6 +77,13 @@ export default {
       }).then(result => {
         if (result.status === 1) {
           this.searchResult.list = result.data.videoList
+        } else {
+          toast(result.msg, this.tips);
+          if (result.status === -1) {
+            window.setTimeout(() => {
+              this.$router.push({path: '/login'})
+            }, 100)
+          }
         }
       })
     },
@@ -97,7 +121,6 @@ export default {
 .wrapper
   width 100%
   .search
-    width 100%
     padding 0 2.5rem
     height 8.42rem
     background-color #F8F8F8
@@ -133,5 +156,5 @@ export default {
       margin-left 1.67rem
       font-size 2.67rem
       color #666
-      width 10rem
+      width 6rem
 </style>

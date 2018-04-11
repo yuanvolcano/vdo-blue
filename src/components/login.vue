@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper login-img">
+  <div class="login login-img">
     <div class='user-img logo-img'></div>
     <div class='login-box'>
       <group class="group">
@@ -57,12 +57,11 @@ export default {
         text: ''
       },
       loading: false,
-      text: '正在登陆'
+      text: '正在登录'
     }
   },
   computed: {
     disable () {
-      let btns = this.$refs.btns
       if (!this.username.trim() || !this.userpwd.trim()) {
         return true
       } else {
@@ -85,7 +84,7 @@ export default {
     focus () {
       window.setTimeout(() => {
         let pannel = document.querySelector('.login-box')
-        pannel.scrollIntoView(true)
+        pannel.scrollIntoView(false)
         pannel.scrollIntoViewIfNeeded()
       }, 50)
     },
@@ -132,10 +131,11 @@ export default {
   @import "~assets/stylus/variable.styl"
   @import "~assets/stylus/mixin.styl"
 
-  .wrapper
+  .login
     width: 100%
     height: 100%
-    overflow hidden
+    background-size 100% !important
+    overflow auto
     .user-img
       margin: 16.25rem auto 0
       width: 18rem

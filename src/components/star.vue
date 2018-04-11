@@ -2,7 +2,9 @@
   <div class="wrapper">
     <search-bar @focus="focusHandle" :toggle="toggle" @quick="quickClick" @all="allClick"></search-bar>
     <swiper :list="list" :auto="true" :height="'36rem'" :loop="true"></swiper>
-    <star-list v-for="(data, k) in starData" :key="k" :items='data' @to-star="getStarer" @load="loadStar(k)"></star-list>
+    <div class="star-content">
+      <star-list v-for="(data, k) in starData" :key="k" :items='data' @to-star="getStarer" @load="loadStar(k)"></star-list>
+    </div>
     <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
     <loading v-model="loading" :text="text"></loading>
   </div>
@@ -97,10 +99,16 @@ export default {
           if (result.data.starList.length !== 0) {
             this.starData[param.type - 1].list = result.data.starList
           } else {
+            param.page--
             toast('没有更多明星了哦', this.tips)
           }
         } else {
-          toast(result.msg, this.tips)
+          toast(result.msg, this.tips);
+          if (result.status === -1) {
+            window.setTimeout(() => {
+              this.$router.push({path: '/login'})
+            }, 100)
+          }
         }
       })
     }
@@ -114,4 +122,6 @@ export default {
 
   .wrapper
     width 100%
+    .star-content
+      padding-bottom 8.17rem
 </style>

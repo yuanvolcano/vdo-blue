@@ -1,14 +1,14 @@
 <template>
   <footer class="tab">
-    <router-link tag="div" exact="exact" class="tab-item" to="/home/first">
+    <router-link tag="div" exact="exact" class="tab-item" to="/home/first" replace>
       <div :class="{'active': acitveCap}" class="link-img home-img"></div>
       <span class="tab-link">首页</span>
     </router-link>
-    <router-link tag="div" class="tab-item" to="/home/vip">
+    <router-link tag="div" class="tab-item" to="/home/vip" replace>
       <div class="link-img vip-img active"></div>
       <span class="tab-link">开通VIP</span>
     </router-link>
-    <router-link tag="div" class="tab-item" to="/home/person">
+    <router-link tag="div" class="tab-item" to="/home/person" replace>
       <div class="link-img person-img active"></div>
       <span class="tab-link">个人中心</span>
     </router-link>
@@ -55,6 +55,7 @@ export default {
         margin 0 auto
         background-position center center
         background-repeat no-repeat
+        background-size 4rem !important
       .tab-link
         font-size: 1.67rem
         padding-bottom 0.5rem

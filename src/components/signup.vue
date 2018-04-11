@@ -4,9 +4,9 @@
         <div class="back" @click="back"></div>
         <span>注册</span>
     </div>
-    <div class="body">
+    <div class="register-body">
       <group class="group">
-        <x-input class="ipt" title="title" v-model="username" type="email" placeholder="请输入邮箱" is-type="email" required>
+        <x-input class="ipt" title="title" @on-focus="focus" v-model="username" type="email" placeholder="请输入邮箱" is-type="email" required>
            <div class="clearfix" slot="label">
              <div class="user-email-img email-img"></div>
            </div>
@@ -26,14 +26,14 @@
         </div>
       </div>
       <group class="group">
-        <x-input class="ipt" title="title" v-model="userpwd" type="password" placeholder="请输入密码" required>
+        <x-input class="ipt" title="title" @on-focus="focus" v-model="userpwd" type="password" placeholder="请输入密码" required>
            <div class="clearfix" slot="label">
              <div class="user-email-img pwd-img"></div>
            </div>
         </x-input>
       </group>
       <group class="group">
-        <x-input class="ipt" title="title" @on-blur="blurHanle" v-model="repeatpwd" type="password" placeholder="请确认密码" required>
+        <x-input class="ipt" title="title" @on-focus="focus" @on-blur="blurHanle" v-model="repeatpwd" type="password" placeholder="请确认密码" required>
            <div class="clearfix" slot="label">
              <div class="user-email-img pwd-img"></div>
            </div>
@@ -86,7 +86,6 @@ export default {
   },
   computed: {
     disable () {
-      let btns = this.$refs.btns
       if (!this.username.trim() || !this.userpwd.trim() || !this.code.trim() || !this.repeatpwd.trim()) {
         return true
       } else {
@@ -100,6 +99,13 @@ export default {
     }
   },
   methods: {
+    focus () {
+      window.setTimeout(() => {
+        let pannel = document.querySelector('.register-body')
+        pannel.scrollIntoView(false)
+        pannel.scrollIntoViewIfNeeded()
+      }, 50)
+    },
     blurHanle () {
       if (this.repeatpwd !== this.userpwd) {
         this.tips.show = true;
@@ -107,7 +113,7 @@ export default {
       }
     },
     back () {
-      this.$router.push({path: '/login'})
+      this.$router.go(-1)
     },
     goService () {
       this.$router.push('/service')
@@ -160,23 +166,24 @@ export default {
         this.tips.text = '请输入正确的邮箱'
         return
       }
+      self.countDown = 60
+      self.txt = self.countDown + 'S重新获取'
+      let timer = window.setInterval(function () {
+        --self.countDown;
+        if (self.countDown < 1) {
+          self.txt = '获取验证码'
+          window.clearInterval(timer);
+        } else {
+          self.txt = self.countDown + 'S重新获取'
+        }
+      }, 1000)
       getCode._post({
         email: this.username
       }).then(result => {
         if (result.status === 1) {
-          this.tips.show = true;
-          this.tips.text = '已发送至邮箱'
-          self.countDown = 60
-          self.txt = self.countDown + 'S重新获取'
-          let timer = window.setInterval(function () {
-            --self.countDown;
-            if (self.countDown < 1) {
-              self.txt = '获取验证码'
-              window.clearInterval(timer);
-            } else {
-              self.txt = self.countDown + 'S重新获取'
-            }
-          }, 1000)
+          toast('已发送至邮箱', this.tips)
+        } else {
+          toast(result.msg, this.tips)
         }
       })
     }
@@ -199,7 +206,7 @@ export default {
     text-align center
     font-size 2.67rem;
     color #FFFFFF;
-  .body
+  .register-body
     margin 0 4.58rem
     .login-width
       height: 7.33rem
@@ -262,7 +269,7 @@ export default {
     display flex
     justify-content center
     .service-item
-      margin-top 0.33rem
+      margin-top 0.25rem
       margin-left 0.5rem
       color #F55640
 </style>

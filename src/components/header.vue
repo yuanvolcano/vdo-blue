@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="header-bar">
     <div class="title">
       <div class="back-black" @click="back"></div>
       <span class="title-txt">{{title}}</span>
@@ -31,7 +31,7 @@ export default {
 
 <style lang="stylus" scoped>
 @import '~assets/stylus/mixin.styl'
-.wrapper
+.header-bar
   width 100%
   background-color #fff
   overflow hidden
@@ -48,6 +48,7 @@ export default {
     font-size 2.67rem
     color #333333
     border-bottom 1px solid #d8d8d8
+    z-index 1000
     .title-txt
       font-weight: 700
     .title-left-txt

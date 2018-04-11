@@ -76,11 +76,19 @@ export default {
         this.loading = false
         if (result.status === 1) {
           toast('保存成功，请重新登陆', this.tips)
+          let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+          userInfo.userpwd = this.newPwd
+          localStorage.setItem('userInfo', JSON.stringify(userInfo))
           window.setTimeout(() => {
             this.$router.push({path: '/login'})
           }, 1000)
         } else {
           toast(result.msg, this.tips)
+          if (result.status === -1) {
+            window.setTimeout(() => {
+              this.$router.push({path: '/login'})
+            }, 100)
+          }
         }
       })
     }
@@ -129,7 +137,7 @@ export default {
           color: #ccc;
           margin-left 0.67rem
           padding 1rem
-          background-color yellow
+          // background-color yellow
   input:hover
     border 1px solid #666
 </style>

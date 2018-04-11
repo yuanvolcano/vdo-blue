@@ -2,10 +2,13 @@
 bg-image($url)
   background-repeat no-repeat
   background-position center center
-  background-image: url($url + "@2x.png")
   @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3)
-    background-image: url($url + "@3x.png")
-
+    background-image url($url + "@3x.png")
+  @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2)
+    background-image url($url + "@2x.png")
+  @media (-webkit-min-device-pixel-ratio: 1),(min-device-pixel-ratio: 1)
+    background-image url($url + "@2x.png")
+    background-size 100% 100% !important
 // 不换行
 no-wrap()
   text-overflow: ellipsis

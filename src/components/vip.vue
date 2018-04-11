@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper vip">
+  <div class="wrapper-vip">
     <header-bar :title="title"></header-bar>
     <div class="body">
       <div class="top">
@@ -29,7 +29,9 @@
         <div class="privilege-title">VIP会员特权</div>
         <ul class="privilege-body">
           <li v-for="(item, index) in options" :key="index" class="privilege-item">
-            <div class="item-bg vip-id-img"></div>
+            <div class="item-bg">
+              <div class="vip-id-img"></div>
+            </div>
             <div class="item-txt">{{item}}</div>
           </li>
         </ul>
@@ -104,12 +106,11 @@ export default {
   @import "~assets/stylus/variable.styl"
   @import "~assets/stylus/mixin.styl"
 
-  .wrapper.vip
+  .wrapper-vip
     width 100%
-    margin-bottom 8.17rem
     .body
       width 100%
-      margin-top 8.17rem
+      padding 8.17rem 0
       .top
         width 100%
         .item.checked-bg
@@ -202,6 +203,10 @@ export default {
             .item-bg
               height 5.02rem
               margin-top 3.18rem
+              .vip-id-img
+                margin 0 auto
+                height 5.02rem
+                width 5.02rem
             .item-txt
               line-height 2.33rem
               font-size 20px

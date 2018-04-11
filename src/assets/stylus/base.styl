@@ -11,12 +11,11 @@ body, html
   height 100%
 
 .back, .back-black
-  left 1.66rem
+  left 1.67rem
   top 2.67rem
-  width 1.66rem
-  height 2.83rem
+  width 3.5rem
+  height 3.5rem
   bg-image('../images/arrows_white')
-  background-position center center
   extend-click()
   position absolute
 
@@ -24,8 +23,7 @@ body, html
     width 1.5rem
     height 1.5rem
     margin 0.2em
-
-
+    
 .clearfix:after
   content "."
   clear both
@@ -60,6 +58,18 @@ body, html
 
 body .vux-tab .vux-tab-item
   font-size 2.67rem
+
+.vux-confirm .weui-dialog
+  max-width 40rem
+  width 60%
+
+.weui-dialog .weui-dialog__title
+  font-size 2.5rem
+  line-height 4.5rem
+
+.weui-dialog .weui-dialog__ft
+  font-size 2.5rem
+  line-height 4.5rem
 
 .back-black
   bg-image('../images/arrows')
@@ -175,3 +185,6 @@ body .vux-tab .vux-tab-item
 
 .blue-img
   bg-image('../images/bluelive')
+
+.player-img
+  bg-image('../images/_player')

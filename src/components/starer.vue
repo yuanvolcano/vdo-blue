@@ -3,7 +3,7 @@
     <header-bar :title="starData.name"></header-bar>
     <div class="body">
       <star-intro :dataList="starData"></star-intro>
-      <video-list @to-play="getPlayer" :items='vdoItems' @load="loadVdo" :className="classObj"></video-list>
+      <video-list @to-play="getPlayer" :items='vdoItems' @load="loadVdo" :next="false" :className="{classObj: vdoItems.length > 3}"></video-list>
       <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
       <loading v-model="loading" :text="text"></loading>
     </div>
@@ -37,7 +37,8 @@ export default {
       page: 1,
       vdoItems: {
         title: '主要作品',
-        list: []
+        list: [],
+        text: ''
       },
       tips: {
         show: false,
@@ -74,11 +75,18 @@ export default {
           if (result.data.starWorkList.length !== 0) {
             this.vdoItems.list = result.data.starWorkList
           } else {
+            param.page--
+            this.vdoItems.text = '没有找到相关作品'
             toast('已经加载完所有作品了', this.tips)
             this.page = 1
           }
         } else {
-          toast(result.msg, this.tips)
+          toast(result.msg, this.tips);
+          if (result.status === -1) {
+            window.setTimeout(() => {
+              this.$router.push({path: '/login'})
+            }, 100)
+          }
         }
       })
     }

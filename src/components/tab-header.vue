@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
     <header class="tab">
-      <router-link tag="div" exact="exact" class="tab-item" to="/home/first/recommend">
+      <router-link tag="div" exact="exact" class="tab-item" to="/home/first/recommend" replace>
         <span class="tab-link">首页推荐</span>
       </router-link>
-      <router-link tag="div" class="tab-item" to="/home/first/movie">
+      <router-link tag="div" class="tab-item" to="/home/first/movie" replace>
         <span class="tab-link">电影</span>
       </router-link>
-      <router-link tag="div" class="tab-item" to="/home/first/star">
+      <router-link tag="div" class="tab-item" to="/home/first/star" replace>
         <span class="tab-link">明星</span>
       </router-link>
     </header>

@@ -82,7 +82,6 @@ export default {
   },
   computed: {
     disable () {
-      let btns = this.$refs.btns
       if (!this.username.trim() || !this.userpwd.trim() || !this.code.trim() || !this.repeatpwd.trim()) {
         return true
       } else {
@@ -90,16 +89,11 @@ export default {
       }
     }
   },
-  created () {
-    if (!!this.$route.query && this.$route.query.isagree) {
-      this.checked = true
-    }
-  },
   methods: {
     focus () {
       window.setTimeout(() => {
-        let pannel = document.querySelector('.login-box')
-        pannel.scrollIntoView(true)
+        let pannel = document.querySelector('.forget-body')
+        pannel.scrollIntoView(false)
         pannel.scrollIntoViewIfNeeded()
       }, 50)
     },
@@ -110,7 +104,7 @@ export default {
       }
     },
     back () {
-      this.$router.push({path: '/login'})
+      this.$router.go(-1)
     },
     goService () {
       this.$router.push('/service')
@@ -129,8 +123,6 @@ export default {
         this.tips.text = '请确认密码'
       } else if (this.repeatpwd !== this.userpwd) {
         this.tips.text = '两次密码不一致请重新输入'
-      } else if (!this.checked) {
-        this.tips.text = '请同意服务条款'
       }
     },
     _registerHandle () {
@@ -149,6 +141,7 @@ export default {
           window.sessionStorage.setItem('token', result.data.token)
           localStorage.setItem('userInfo', JSON.stringify({'username': this.username, 'userpwd': this.userpwd}))
           this.$router.replace({path: '/home/first'})
+          toast('登录成功', this.tips)
         } else {
           toast(result.msg, this.tips)
         }
@@ -165,25 +158,24 @@ export default {
         this.tips.text = '请输入正确的邮箱'
         return
       }
-      this.txt = '正在获取验证码'
-      this.loading = true
+      self.countDown = 60
+      self.txt = self.countDown + 'S重新获取'
+      let timer = window.setInterval(function () {
+        --self.countDown;
+        if (self.countDown < 1) {
+          self.txt = '获取验证码'
+          window.clearInterval(timer);
+        } else {
+          self.txt = self.countDown + 'S重新获取'
+        }
+      }, 1000)
       getCode._post({
         email: this.username
       }).then(result => {
         if (result.status === 1) {
-          this.tips.show = true;
-          this.tips.text = '已发送至邮箱'
-          self.countDown = 60
-          self.txt = self.countDown + 'S重新获取'
-          let timer = window.setInterval(function () {
-            --self.countDown;
-            if (self.countDown < 1) {
-              self.txt = '获取验证码'
-              window.clearInterval(timer);
-            } else {
-              self.txt = self.countDown + 'S重新获取'
-            }
-          }, 1000)
+          toast('已发送至邮箱', this.tips)
+        } else {
+          toast(result.msg, this.tips)
         }
       })
     }

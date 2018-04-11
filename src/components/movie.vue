@@ -2,7 +2,9 @@
   <div class="wrapper">
     <search-bar @focus="focusHandle" @all="allCLick" :toggle="toggle"></search-bar>
     <swiper :list="list" :auto="true" :height="'36rem'" :loop="true"></swiper>
-    <video-list v-for="(data, k) in videoData" :key="k" :items='data' @to-play="getPlayer" @load="loadVdo(k)"></video-list>
+    <div class="movie-content">
+      <video-list v-for="(data, k) in videoData" :key="k" :items='data' @to-play="getPlayer" @load="loadVdo(k)"></video-list>
+    </div>
     <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
     <loading v-model="loading" :text="text"></loading>
   </div>
@@ -96,10 +98,16 @@ export default {
           if (result.data.videoList.length !== 0) {
             this.videoData[param.type - 1].list = result.data.videoList
           } else {
+            param.page--
             toast('没有更多视频了哦', this.tips)
           }
         } else {
           toast(result.msg, this.tips)
+          if (result.status === -1) {
+            window.setTimeout(() => {
+              this.$router.push({path: '/login'})
+            }, 100)
+          }
         }
       })
     }
@@ -113,4 +121,6 @@ export default {
 
   .wrapper
     width 100%
+    .movie-content
+      padding-bottom 8.17rem
 </style>

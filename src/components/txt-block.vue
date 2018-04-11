@@ -43,7 +43,6 @@ export default {
 .wrapper
   width 100%
   .block
-    width 100%
     padding 0 2.5rem
     background-color #fff
     overflow hidden

@@ -94,10 +94,16 @@ export default {
           if (result.data.starList.length !== 0) {
             this.starList.list = result.data.starList
           } else {
+            param.page--
             toast('没有更多的明星了哦', this.tips)
           }
         } else {
           toast(result.msg, this.tips)
+          if (result.status === -1) {
+            window.setTimeout(() => {
+              this.$router.push({path: '/login'})
+            }, 100)
+          }
         }
       })
     }

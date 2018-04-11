@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="comment">
     <div class="item" v-for="(comment, index) in comments" :key="index">
       <div class="left">
         <img class="commenter-img" src="../assets/images/logo@2x.png" alt="">
@@ -10,6 +10,9 @@
         <div class="comment-time">{{comment.date}}</div>
       </div>
     </div>
+    <div v-if="isChange && comments.length" @click="loadmore" class="footer">
+      <div class="change-img change"></div>
+    </div>
   </div>
 </template>
 
@@ -18,6 +21,15 @@ export default {
   props: {
     comments: {
       type: Array
+    },
+    isChange: {
+      type: Boolean,
+      default: true
+    }
+  },
+  methods: {
+    loadmore () {
+      this.$emit('load')
     }
   }
 }
@@ -25,7 +37,7 @@ export default {
 
 <style lang="stylus" scoped>
 
-.wrapper
+.comment
   width 100%
   margin-top 3rem
   background-color #fff
@@ -65,4 +77,11 @@ export default {
         color #212121
         font-size 2rem
         line-height 4rem
+  .footer
+    height 5rem
+    background-color #fff
+    .change
+      height 5rem
+      width 5rem
+      margin 0 auto
 </style>

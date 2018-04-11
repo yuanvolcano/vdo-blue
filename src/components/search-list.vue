@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div v-if="data.title" class="title">{{data.title}}</div>
+    <div v-if="!data.list.length" class="title">{{data.text}}</div>
     <div v-for="(item, index) in data.list" :key="index" @click="clickHandle(item)" class="content">
       <div class="left">
         <div class="vdo-name">
@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-    <div v-if="isLoad" class="footer">
+    <div v-if="isLoad && data.list.length" class="footer">
       <span @click="operate" class="load-more">更多精彩视频</span>
     </div>
   </div>
@@ -58,11 +58,12 @@ export default {
   width 100%
   background-color #fff
   .title
-    padding 1rem 0rem
-    margin-left 2.5rem
+    // padding 1rem 0rem
+    margin-top 2.5rem
+    text-align center
     font-size 2.83rem
     line-height 4rem
-    color #333
+    color #666
   .content
     padding 2.5rem 0
     margin-left 2.5rem

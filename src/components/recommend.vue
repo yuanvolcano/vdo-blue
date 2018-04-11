@@ -2,8 +2,10 @@
   <div class="wrapper">
     <search-bar @focus="focusHandle"></search-bar>
     <swiper :list="list" :auto="true" :height="'36rem'" :loop="true"></swiper>
-    <video-list @to-play="getPlayer" :items='vdoItems' @load="loadVdo"></video-list>
-    <star-list @to-star="getStarer" :items='starItems' @load="loadStar"></star-list>
+    <div class="recommend-content">
+      <video-list @to-play="getPlayer" :items='vdoItems' @load="loadVdo"></video-list>
+      <star-list @to-star="getStarer" :items='starItems' @load="loadStar"></star-list>
+    </div>
     <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
     <loading v-model="loading" :text="text"></loading>
   </div>
@@ -98,10 +100,16 @@ export default {
           if (result.data.recommendVideo.length !== 0) {
             this.vdoItems.list = result.data.recommendVideo
           } else {
+            param.videoPage--
             toast('没有更多视频了哦', this.tips)
           }
         } else {
           toast(result.msg, this.tips)
+          if (result.status === -1) {
+            window.setTimeout(() => {
+              this.$router.push({path: '/login'})
+            }, 100)
+          }
         }
       })
     },
@@ -117,10 +125,16 @@ export default {
           if (result.data.recommendStar.length !== 0) {
             this.starItems.list = result.data.recommendStar
           } else {
+            param.starPage--
             toast('没有更多明星了哦', this.tips);
           }
         } else {
           toast(result.msg, this.tips);
+          if (result.status === -1) {
+            window.setTimeout(() => {
+              this.$router.push({path: '/login'})
+            }, 100)
+          }
         }
       })
     }
@@ -134,4 +148,6 @@ export default {
 
   .wrapper
     width 100%
+    .recommend-content
+      padding-bottom 8.17rem
 </style>

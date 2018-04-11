@@ -22,7 +22,8 @@
           </div>
         </div>
       </div>
-      <div v-if="isChange" @click="loadmore" class="footer change-img">
+      <div v-if="isChange" @click="loadmore" class="footer">
+        <div class="change-img change"></div>
       </div>
     </div>
   </div>
@@ -30,11 +31,6 @@
 
 <script>
 export default {
-  data () {
-    return {
-      src: require('../assets/images/222@2x.png')
-    }
-  },
   props: {
     items: {
       type: Object
@@ -141,4 +137,8 @@ export default {
     .footer
       height 5rem
       background-color #fff
+      .change
+        height 5rem
+        width 5rem
+        margin 0 auto
 </style>

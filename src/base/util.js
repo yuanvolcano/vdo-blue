@@ -2,7 +2,7 @@ import {getBanner} from 'api'
 
 export function toast (msg, tips) {
   tips.show = true;
-  tips.position = 'bottom';
+  tips.position = 'middle';
   tips.text = msg;
 }
 
@@ -21,6 +21,10 @@ export function _getBanner (param, option) {
         }
         option.push(obj)
       })
+    } else if (result.status === -1) {
+      window.setTimeout(() => {
+        this.$router.push({path: '/login'})
+      }, 100)
     }
   })
 }

@@ -1,30 +1,23 @@
 <template>
-  <div class="wrapper">
+  <div class="center">
     <header-bar :title="title"></header-bar>
     <div class="body">
-      <div class="item">
+      <div @click="handle(item)" class="item" :key="key" v-for="(item, key) in message">
         <div class="item-left message-center-img"></div>
         <div class="item-right">
           <div class="item-top">
-            <span class="system-info">系统消息</span>
-            <span class="system-date">2018年2月13日</span>
+            <span class="system-info">{{item.title}}</span>
+            <span class="system-date">{{item.time}}</span>
           </div>
           <div class="item-bottom">
-            <span class="system-txt">收到这条消息的小伙伴，现在连续购买包月VIP将享受5元的优惠</span>
+            <span class="system-txt">{{item.text}}</span>
           </div>
         </div>
       </div>
-      <div class="item">
-        <div class="item-left message-center-img"></div>
-        <div class="item-right">
-          <div class="item-top">
-            <span class="system-info">系统消息</span>
-            <span class="system-date">2018年2月13日</span>
-          </div>
-          <div class="item-bottom">
-            <span class="system-txt">收到这条消息的小伙伴，现在连续购买包月VIP将享受5元的优惠</span>
-          </div>
-        </div>
+    </div>
+    <div v-show="isMask" @click="cancel" class="message">
+      <div class="box">
+        {{content}}
       </div>
     </div>
   </div>
@@ -37,7 +30,23 @@ export default {
   components: {headerBar},
   data () {
     return {
-      title: '消息中心'
+      isMask: false,
+      content: '',
+      title: '消息中心',
+      message: [{
+        title: '系统消息',
+        time: '2018-2-13',
+        text: '收到这条消息的小伙伴，现在连续购买包月VIP将享受5元的优惠'
+      }]
+    }
+  },
+  methods: {
+    handle (item) {
+      this.isMask = true
+      this.content = item.text
+    },
+    cancel () {
+      this.isMask = !this.isMask
     }
   }
 }
@@ -46,8 +55,30 @@ export default {
 <style scoped lang='stylus' rel='stylesheet/stylus'>
   @import "~assets/stylus/variable.styl"
 
-  .wrapper
+  .center
     width 100%
+    height 100%
+    .message
+      width 100%
+      height 100%
+      background-color rgb(22, 22, 22)
+      position absolute
+      left 0
+      top 0
+      // right 0
+      // bottom 0
+      z-index 100
+      .box
+        width 100%
+        box-sizing border-box
+        padding 1rem 2.33rem
+        font-size 2.33rem
+        line-height 4rem
+        position absolute
+        top 50%
+        left 50%
+        transform translate3d(-50%, -50%, 0)
+        background-color #fff
     .body
       width 100%
       margin-top 8.17rem
