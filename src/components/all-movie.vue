@@ -79,11 +79,7 @@ export default {
       setHeight: setHeight
     }
   },
-  activated () {
-    // this.index = this.$route.params.key
-  },
   created () {
-    // console.log(this.$route)
     this.index = Number(this.$route.params.id)
     for (let j = 0; j < 6; j++) {
       this._getVideoSortList({type: j + 1, page: this.pagesArr[j]})
@@ -117,7 +113,9 @@ export default {
             this.videos[param.type - 1].list = result.data.videoList
           } else {
             param.page--
-            toast('没有更多的电影了哦', this.tips)
+            if (this.index === param.page - 1) {
+              toast('没有更多的电影了哦', this.tips)
+            }
             this.videos[param.type - 1].text = '没有找到小电影'
           }
         } else {

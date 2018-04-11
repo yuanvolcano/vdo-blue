@@ -117,7 +117,9 @@ export default {
             this.starData[param.type - 1].list = result.data.starList
           } else {
             param.page--
-            toast('没有更多的明星了哦', this.tips)
+            if (this.index === param.page - 1) {
+              toast('没有更多的明星了哦', this.tips)
+            }
             this.starData[param.type - 1].text = '没有找到明星'
           }
         } else {

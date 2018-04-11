@@ -66,7 +66,7 @@ export default {
       setVdoInfo: 'SET_VDOITEM'
     }),
     nextMovie () {
-      this.$router.push({name: 'allMovie', params: {id: 0}})
+      this.$router.push({name: 'allMovie', params: {id: 2}})
     },
     nextStar () {
       this.$router.push({name: 'allStar', params: {id: 0}})
