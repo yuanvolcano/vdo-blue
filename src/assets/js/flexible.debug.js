@@ -45,14 +45,14 @@
       }
     } else {
     // 其他设备下，仍旧使用1倍的方案
-      // if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {
-      //   dpr = 3;
-      // } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)) {
-      //   dpr = 2;
-      // } else {
-      //   dpr = 1;
-      // }
-      dpr = 1
+      if (devicePixelRatio >= 2.5 && (!dpr || dpr >= 2.5)) {
+        dpr = 3;
+      } else if (devicePixelRatio >= 1.5 && (!dpr || dpr >= 1.5)) {
+        dpr = 2;
+      } else {
+        dpr = 1;
+      }
+      // dpr = 1
     }
     scale = 1 / dpr;
   }

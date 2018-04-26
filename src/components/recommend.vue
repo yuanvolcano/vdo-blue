@@ -20,8 +20,10 @@ import {getRelateVideo} from 'api'
 import {Swiper, Toast, Loading} from 'vux'
 import {toast, _getBanner} from 'base/util'
 import {mapMutations} from 'vuex'
+import base from 'base/mixin'
 
 export default {
+  mixins: [base],
   components: {
     Toast,
     Loading,
@@ -123,7 +125,7 @@ export default {
       param.loadmore && (this.loading = true)
       getRelateVideo._post({
         type: 2,
-        page: param.starPage,
+        page: param.starPage || this.starPage,
         rows: param.rows || 10
       }).then(result => {
         this.loading = false

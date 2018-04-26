@@ -16,8 +16,10 @@ import videoList from './videoList'
 import {mapMutations} from 'vuex'
 import {Toast, Loading} from 'vux'
 import {toast} from 'base/util'
+import base from 'base/mixin'
 
 export default {
+  mixins: [base],
   components: {headerBar, videoList, Toast, Loading},
   data () {
     return {

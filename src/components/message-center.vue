@@ -25,8 +25,10 @@
 
 <script>
 import headerBar from './header'
+import base from 'base/mixin'
 
 export default {
+  mixins: [base],
   components: {headerBar},
   data () {
     return {
@@ -61,13 +63,11 @@ export default {
     .message
       width 100%
       height 100%
-      background-color rgb(22, 22, 22)
+      background-color rgba(220, 220, 220, 0.8)
       position absolute
       left 0
       top 0
-      // right 0
-      // bottom 0
-      z-index 100
+      z-index 10000
       .box
         width 100%
         box-sizing border-box
@@ -77,6 +77,7 @@ export default {
         position absolute
         top 50%
         left 50%
+        color #f55640
         transform translate3d(-50%, -50%, 0)
         background-color #fff
     .body

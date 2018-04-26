@@ -34,6 +34,7 @@ export let getCode = new Api('basic/basicController/sendEmail') // 获取验证�
 export let loginAction = new Api('basic/basicController/loginAction') // 登录
 export let feedback = new Api('basic/basicController/feedback') // 提交反馈
 export let changePwd = new Api('basic/basicController/updatePassword') // 修改密码
+export let forgetPwd = new Api('basic/basicController/forgetPassword') // 修改密码
 export let logOutAction = new Api('basic/basicController/logOutAction') // 注销
 export let getBanner = new Api('basic/basicController/getBanner') // 获取banner
 export let getRelateVideo = new Api('video/videoController/getRecommend') // 获取推荐列表

@@ -19,8 +19,10 @@ import {Swiper, Toast, Loading} from 'vux'
 import {toast, _getBanner} from 'base/util'
 import {getVideoList} from 'api'
 import {mapMutations} from 'vuex'
+import base from 'base/mixin'
 
 export default {
+  mixins: [base],
   components: {
     Swiper,
     Toast,

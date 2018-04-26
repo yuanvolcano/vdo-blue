@@ -11,7 +11,8 @@ import VueLazyload from 'vue-lazyload'
 import 'assets/stylus/index.styl'
 
 Vue.use(VueLazyload, {
-  loading: require('assets/images/default@3x.png')
+  loading: require('assets/images/default@3x.png'),
+  error: require('assets/images/default@3x.png')
 })
 
 fastclick.attach(document.body)
@@ -32,6 +33,7 @@ router.beforeEach((to, from, next) => {
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

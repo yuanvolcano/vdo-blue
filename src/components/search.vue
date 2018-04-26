@@ -21,8 +21,10 @@ import searchList from './search-list'
 import {searchVideo} from 'api'
 import {toast} from 'base/util'
 import {Loading, Toast} from 'vux'
+import base from 'base/mixin'
 
 export default {
+  mixins: [base],
   components: {txtBlock, searchList, Loading, Toast},
   data () {
     return {

@@ -10,14 +10,6 @@
           <video-list @to-play="getPlayer" :items='videos[index]' @load="loadVdo"></video-list>
         </swiper-item>
       </swiper>
-      <!-- <tab class="tab" :line-width=0 active-color='#F55640' v-model="defaultkey" ref="tabs">
-        <tab-item v-for="(item, index) in list" @click="defaultkey = index" :key="index">{{item}}</tab-item>
-      </tab>
-      <swiper class="swiper" :height="setHeight" v-model="defaultkey" :show-dots="false">
-        <swiper-item class="swiper-item" v-for="(item, index) in list" :key="index">
-          <video-list @to-play="getPlayer" :items='videos[index]' @load="loadVdo"></video-list>
-        </swiper-item>
-      </swiper> -->
       <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
       <loading v-model="loading" :text="text"></loading>
     </div>
@@ -31,6 +23,7 @@ import {Tab, TabItem, Swiper, SwiperItem, Toast, Loading} from 'vux'
 import {getVideoSortList} from 'api'
 import {toast} from 'base/util'
 import {mapMutations} from 'vuex'
+import base from 'base/mixin'
 
 const list = () => ['最热', '点赞', '最新', '国内', '日本', '随机']
 const videoData = (n) => {
@@ -47,6 +40,7 @@ const fontSize = document.documentElement.style.fontSize.replace(/px/, '')
 const setHeight = (clientHeight - fontSize * 14.67) + 'px'
 
 export default {
+  mixins: [base],
   components: {
     headerBar,
     videoList,
@@ -59,7 +53,7 @@ export default {
   },
   data () {
     return {
-      threshold: 50,
+      threshold: 80,
       title: '电影',
       list: list(),
       index: 0,

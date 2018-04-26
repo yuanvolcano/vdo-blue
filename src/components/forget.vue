@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { loginAction, getCode } from 'api/index'
+import { forgetPwd, getCode } from 'api/index'
 import { XInput, Group, CheckIcon, Toast, Loading } from 'vux'
 import {toast, emailReg} from 'base/util'
 
@@ -132,14 +132,15 @@ export default {
         return
       }
       this.loading = true
-      loginAction._post({
+      forgetPwd._post({
         email: this.username,
-        password: this.userpwd
+        code: this.code,
+        newPassword: this.userpwd
       }).then(result => {
         this.loading = false;
         if (result.status === 1) {
           window.sessionStorage.setItem('token', result.data.token)
-          localStorage.setItem('userInfo', JSON.stringify({'username': this.username, 'userpwd': this.userpwd}))
+          window.localStorage.setItem('userInfo', JSON.stringify({'username': this.username, 'userpwd': this.userpwd}))
           this.$router.replace({path: '/home/first'})
           toast('登录成功', this.tips)
         } else {

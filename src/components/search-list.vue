@@ -65,8 +65,7 @@ export default {
     line-height 4rem
     color #666
   .content
-    padding 2.5rem 0
-    margin-left 2.5rem
+    padding 2.5rem
     display flex
     justify-content flex-start
     align-items center
@@ -113,6 +112,8 @@ export default {
       img
        width 100%
        height 100%
+       object-fit contain
+       object-position center
       .vdo-timelen
         position absolute
         width 6rem

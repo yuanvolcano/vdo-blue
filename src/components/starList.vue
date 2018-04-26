@@ -8,7 +8,7 @@
       <div class="body">
         <div v-for="(item, index) in items.list" @click="handlClick(item)" :key="index" class="item">
           <div class="item-content">
-            <img class="vdo-img" v-lazy="item.pic">
+            <img class="vdo-img" @error="errorSrc" v-lazy="item.pic">
           </div>
           <div class="item-description">
             <div class="vdo-name">
@@ -32,6 +32,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      errorSrc: 'this.src="' + require('assets/images/default@2x.png') + '"'
+    }
+  },
   props: {
     items: {
       type: Object
@@ -81,7 +86,7 @@ export default {
         height 3.5rem
         margin-right 1.67rem
     .body
-      width 100%
+      padding 0 1.67rem
       display flex
       justify-content space-between
       flex-wrap wrap
@@ -98,6 +103,8 @@ export default {
             width 100%
             height 100%
             display block
+            object-fit contain
+            object-position center
           .vdo-timelen
             position absolute
             width 6rem

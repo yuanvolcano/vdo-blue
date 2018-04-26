@@ -4,11 +4,13 @@
     <div class="player">
       <div v-if="poster" @click="playVdo" class="play-btb player-img"></div>
       <img v-if="poster" class="img-poster" :src="vdoInfo.videoPic" @click="playVdo">
-      <video class="vdo" height="1" width="1"
+      <video class="vdo"
+        height="1" width="1"
         :class="getVideoClass"
         :poster="vdoInfo.videoPic"
         @ended="_endWatch"
         :src="vdoInfo.videoUrl"
+        controlsList="nodownload"
         preload="metadata"
         playsinline
         webkit-playsinline="true"
@@ -56,8 +58,10 @@ import {mapGetters} from 'vuex'
 import {Toast, Loading} from 'vux'
 import {toast} from 'base/util'
 import headerBar from './header'
+import base from 'base/mixin'
 
 export default {
+  mixins: [base],
   components: {headerBar, progressBar, searchList, comment, addComment, Toast, Loading},
   computed: {
     ...mapGetters(['vdoItem']),
@@ -318,6 +322,8 @@ export default {
     .img-poster
       width 100%
       height 100%
+      object-fit contain
+      object-position center
     .video-init
       position absolute
       left 1.5rem
@@ -327,8 +333,16 @@ export default {
     .video
       width 100%
       height 35.17rem
+      object-fit fill
     .vdo
       background-color #333
+    video::-internal-media-controls-download-button
+      display none
+    video::-webkit-media-controls-enclosure
+      overflow hidden !important
+    video::-webkit-media-controls-panel
+      width calc(100% + 30px)
+      margin-left auto
   .actor-info
     padding 1.67rem 0
     margin-left 2.5rem

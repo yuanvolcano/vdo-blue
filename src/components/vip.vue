@@ -46,8 +46,10 @@
 
 <script>
 import headerBar from './header'
+import base from 'base/mixin'
 
 export default {
+  mixins: [base],
   components: {headerBar},
   data () {
     return {

@@ -31,6 +31,7 @@ import {Tab, TabItem, Swiper, SwiperItem, Toast, Loading} from 'vux'
 import {getStarSortList} from 'api'
 import {toast} from 'base/util'
 import {mapMutations} from 'vuex'
+import base from 'base/mixin'
 
 const list = () => ['最热', '最新', '亚洲', '欧美', '原创', '日本', '随机']
 const starData = (n) => {
@@ -47,6 +48,7 @@ const fontSize = document.documentElement.style.fontSize.replace(/px/, '')
 const setHeight = (clientHeight - fontSize * 14.67) + 'px'
 
 export default {
+  mixins: [base],
   components: {
     headerBar,
     starList,
@@ -59,7 +61,7 @@ export default {
   },
   data () {
     return {
-      threshold: 50,
+      threshold: 80,
       title: '明星',
       list: list(),
       index: 0,

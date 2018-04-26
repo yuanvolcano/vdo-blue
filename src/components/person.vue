@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="personal">
     <div class="personal-top">
       <img class="personal-bg" src="../assets/images/Rectangle2.png">
       <div class="personal-info">
@@ -11,30 +11,30 @@
       </div>
     </div>
     <div class="personal-bottom">
-      <div class="item personal-collect">
+      <div @click="goCollect" class="item personal-collect">
         <div class="item-img collect-img"></div>
         <div class="item-txt">收藏</div>
-        <div class="item-next next-img" @click="goCollect"></div>
+        <div class="item-next next-img"></div>
       </div>
-      <div class="item personal-collect">
+      <div @click="goMessage" class="item personal-collect">
         <div class="item-img message-img"></div>
         <div class="item-txt">消息中心</div>
-        <div class="item-next next-img" @click="goMessage"></div>
+        <div class="item-next next-img"></div>
       </div>
-      <div class="item personal-collect">
+      <div @click="goFeedback" class="item personal-collect">
         <div class="item-img feedback-img"></div>
         <div class="item-txt">反馈</div>
-        <div class="item-next next-img" @click="goFeedback"></div>
+        <div class="item-next next-img"></div>
       </div>
-      <div class="item personal-collect">
+      <div @click="goPwdChange" class="item personal-collect">
         <div class="item-img pwdchange-img"></div>
         <div class="item-txt">密码修改</div>
-        <div class="item-next next-img" @click="goPwdChange"></div>
+        <div class="item-next next-img"></div>
       </div>
-      <div class="item personal-collect last">
+      <div @click="goAccountCan" class="item personal-collect last">
         <div class="item-img setting-img"></div>
         <div class="item-txt">账户注销</div>
-        <div class="item-next next-img" @click="goAccountCan"></div>
+        <div class="item-next next-img"></div>
       </div>
       <confirm v-model="isShow" :title="title" @on-confirm="logout">
         <div class="logout logout-img" slot="default"></div>
@@ -49,8 +49,10 @@ import {mapGetters, mapMutations} from 'vuex'
 import {Confirm, Toast} from 'vux'
 import {logOutAction} from 'api'
 import {toast} from 'base/util'
+import base from 'base/mixin'
 
 export default {
+  mixins: [base],
   components: {Confirm, Toast},
   data () {
     return {
@@ -117,9 +119,10 @@ export default {
 <style lang="stylus" scoped>
 @import '~assets/stylus/mixin.styl'
 
-.wrapper
+.personal
   width 100%
-  height 100%
+  padding-bottom 8.17rem
+  overflow auto
   .personal-top
     width 100%
     position relative

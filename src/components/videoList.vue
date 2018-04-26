@@ -8,7 +8,7 @@
       <div class="body">
         <div :key="index" v-for="(item, index) in items.list" @click="clickHandle(item)" class="item" :class="className.item">
           <div class="item-content" :class="className.imgWidth">
-            <img class="vdo-img" v-lazy="item.pic">
+            <img class="vdo-img" @error="errorSrc" v-lazy="item.pic">
             <div class="vdo-timelen">{{item.videoTime | formatTime}}</div>
           </div>
           <div class="item-description">
@@ -30,6 +30,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      errorSrc: require('assets/images/default@2x.png')
+    }
+  },
   props: {
     items: {
       type: Object
@@ -89,7 +94,7 @@ export default {
       height 3.5rem
       margin-right 1.67rem
   .body
-    width 100%
+    padding 0 1.67rem
     display flex
     justify-content space-between
     flex-wrap wrap
@@ -106,6 +111,8 @@ export default {
           width 100%
           height 100%
           display block
+          object-fit contain
+          object-position center
         .vdo-timelen
           position absolute
           width 6rem

@@ -70,11 +70,10 @@ export default {
     }
   },
   created () {
-    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    let userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
     if (userInfo) {
       this.username = userInfo.username
       this.userpwd = userInfo.userpwd
-      // this.clickLogin()
     }
   },
   methods: {
@@ -103,6 +102,7 @@ export default {
         return
       }
       this.loading = true;
+      // this.$router.replace({path: '/home/first'})
       loginAction._post({
         email: this.username,
         password: this.userpwd
@@ -110,7 +110,7 @@ export default {
         this.loading = false;
         if (result.status === 1) {
           window.sessionStorage.setItem('token', result.data.token)
-          localStorage.setItem('userInfo', JSON.stringify({'username': this.username, 'userpwd': this.userpwd}))
+          window.localStorage.setItem('userInfo', JSON.stringify({'username': this.username, 'userpwd': this.userpwd}))
           this.$router.replace({path: '/home/first'})
         } else {
           toast(result.msg, this.tips)

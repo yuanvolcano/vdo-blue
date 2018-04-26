@@ -21,8 +21,10 @@ import headerBar from './header'
 import {Toast, Loading} from 'vux'
 import {feedback} from 'api'
 import {toast} from 'base/util'
+import base from 'base/mixin'
 
 export default {
+  mixins: [base],
   components: {headerBar, Toast, Loading},
   data () {
     return {

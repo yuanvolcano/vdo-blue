@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import './assets/js/flexible_css.debug.js'
+// import './assets/js/flexible_css.debug.js'
 import './assets/js/flexible.debug.js'
 
 export default {

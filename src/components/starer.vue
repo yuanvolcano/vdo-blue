@@ -17,8 +17,10 @@ import videoList from './videoList'
 import {getStarDetail} from 'api'
 import {toast} from 'base/util'
 import {Toast, Loading} from 'vux'
+import base from 'base/mixin'
 
 export default {
+  mixins: [base],
   components: {
     Toast,
     Loading,
