@@ -55,7 +55,7 @@ export default {
         margin 0 auto
         background-position center center
         background-repeat no-repeat
-        background-size 4rem !important
+        // background-size 4rem !important
       .tab-link
         font-size: 1.67rem
         padding-bottom 0.5rem

@@ -1,5 +1,6 @@
 <template>
   <div class="comment">
+    <div v-if="!comments.length" class="comment-txt">该视频还没人添加评论！</div>
     <div class="item" v-for="(comment, index) in comments" :key="index">
       <div class="left">
         <img class="commenter-img" src="../assets/images/logo@2x.png" alt="">
@@ -7,10 +8,10 @@
       <div class="right">
         <div class="user-name">{{comment.name}}</div>
         <div class="user-comment">{{comment.comment}}</div>
-        <div class="comment-time">{{comment.date}}</div>
+        <div class="comment-time">{{comment.createTime | formatDate}}</div>
       </div>
     </div>
-    <div v-if="isChange && comments.length" @click="loadmore" class="footer">
+    <div v-if="hasMore" @click="loadmore" class="footer">
       <div class="change-img change"></div>
     </div>
   </div>
@@ -22,9 +23,14 @@ export default {
     comments: {
       type: Array
     },
-    isChange: {
+    hasMore: {
       type: Boolean,
-      default: true
+      default: false
+    }
+  },
+  filters: {
+    formatDate (val) {
+      return val.split(' ')[0]
     }
   },
   methods: {
@@ -41,6 +47,9 @@ export default {
   width 100%
   margin-top 3rem
   background-color #fff
+  .comment-txt
+    text-align center
+    font-size 2.5rem
   .item
     margin 0 2.75rem 0
     padding-bottom 2rem

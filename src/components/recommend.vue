@@ -49,11 +49,13 @@ export default {
       text: '正在加载',
       vdoItems: {
         title: '最新推荐',
-        list: []
+        list: [],
+        text: '当前没有电影！'
       },
       starItems: {
         title: '最热明星',
-        list: []
+        list: [],
+        text: '当前没有明星！'
       }
     }
   },
@@ -109,7 +111,9 @@ export default {
             this.vdoItems.list = result.data.recommendVideo
           } else {
             param.videoPage--
-            toast('没有更多视频了哦', this.tips)
+            if (param.loadmore) {
+              toast('没有更多视频了哦', this.tips)
+            }
           }
         } else {
           toast(result.msg, this.tips)
@@ -134,7 +138,9 @@ export default {
             this.starItems.list = result.data.recommendStar
           } else {
             param.starPage--
-            toast('没有更多明星了哦', this.tips);
+            if (param.loadmore) {
+              toast('没有更多明星了哦', this.tips);
+            }
           }
         } else {
           toast(result.msg, this.tips);

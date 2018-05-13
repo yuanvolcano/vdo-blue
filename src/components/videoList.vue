@@ -168,8 +168,9 @@ export default {
       width 5rem
       margin 0 auto
   .default
+    background-color #fff
     text-align center
     font-size 2.83rem
     color #666
-    margin-top 2.5em
+    padding 2rem 0
 </style>

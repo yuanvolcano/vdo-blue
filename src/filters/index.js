@@ -15,7 +15,8 @@ const filters = {
     } else {
       let min = parseInt(value / 60)
       min = min < 10 ? '0' + min : min
-      return min + ":" + value % 60
+      let sec = value % 60 < 10 ? '0' + value % 60 : value % 60 < 10
+      return min + ":" + sec
     }
   },
   formatPercent (value) {

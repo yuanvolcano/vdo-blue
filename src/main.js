@@ -9,6 +9,7 @@ import fastclick from 'fastclick'
 import VueLazyload from 'vue-lazyload'
 
 import 'assets/stylus/index.styl'
+import 'vue-ydui/dist/ydui.base.css';
 
 Vue.use(VueLazyload, {
   loading: require('assets/images/default@3x.png'),

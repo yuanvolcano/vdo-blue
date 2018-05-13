@@ -38,10 +38,10 @@
     </div>
     <div class="recommend">
       <search-list :data="searchResult" :isLoad="isLoad" :operate="getMoreVedio" @select="goRecommendVideo"></search-list>
-      <comment :comments="comments" @load="load"></comment>
+      <!-- <comment-list :comments="comments" @load="load"></comment-list> -->
     </div>
     <div class="player-footer">
-      <add-comment @focus="focus" @publish="publish"></add-comment>
+      <comment-bar @goComments="goComments" :num="comments.length"></comment-bar>
     </div>
     <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
     <loading v-model="loading" :text="text"></loading>
@@ -51,9 +51,9 @@
 <script>
 import progressBar from './progress'
 import searchList from './search-list'
-import comment from './comment'
-import addComment from './add-comment'
-import {getVideoContent, agreeClick, disagreeClick, endWatch, getRecommendVedio, addVideoComment, getRelateComment, collectVideo} from 'api'
+// import commentList from './comment-list'
+import commentBar from './comment-bar'
+import {getVideoContent, agreeClick, disagreeClick, endWatch, getRecommendVedio, getRelateComment, collectVideo} from 'api'
 import {mapGetters} from 'vuex'
 import {Toast, Loading} from 'vux'
 import {toast} from 'base/util'
@@ -62,7 +62,7 @@ import base from 'base/mixin'
 
 export default {
   mixins: [base],
-  components: {headerBar, progressBar, searchList, comment, addComment, Toast, Loading},
+  components: {headerBar, progressBar, searchList, /* commentList, */commentBar, Toast, Loading},
   computed: {
     ...mapGetters(['vdoItem']),
     label () {
@@ -100,20 +100,7 @@ export default {
         list: [
         ]
       },
-      comments: [
-        // {
-        //   name: '时光在我心中',
-        //   comment: '好好看啊，有一部史诗巨作，有剧情，有深度，还是原创，感谢楼主，能发邮箱么',
-        //   createTime: '2013-03-05',
-        //   pic: ''
-        // },
-        // {
-        //   name: '如今',
-        //   comment: '求主演名字，求番号',
-        //   createTime: '2013-03-05',
-        //   pic: ''
-        // }
-      ]
+      comments: []
     }
   },
   created () {
@@ -122,6 +109,9 @@ export default {
     this._getRelateComment({page: this.commentPage})
   },
   methods: {
+    goComments () {
+      this.$router.push({path: `/comments/${this.$route.params.id}`})
+    },
     load () {
       this._getRelateComment({page: ++this.commentPage, notFirst: true})
     },
@@ -130,30 +120,6 @@ export default {
       video.setAttribute('controls', 'controls')
       video.play()
       this.poster = false
-    },
-    focus () {
-      window.setTimeout(() => {
-        let pannel = document.querySelector('.player-footer')
-        pannel.scrollIntoView(false)
-        pannel.scrollIntoViewIfNeeded()
-      }, 50)
-    },
-    publish (value) {
-      addVideoComment._post({
-        comment: value.trim(),
-        videoId: this.$route.params.id
-      }).then(result => {
-        if (result.status === 1) {
-          this._getRelateComment({page: this.commentPage})
-        } else {
-          toast(result.msg, this.tips)
-          if (result.status === -1) {
-            window.setTimeout(() => {
-              this.$router.push({path: '/login'})
-            }, 100)
-          }
-        }
-      })
     },
     goRecommendVideo (item) {
       this.$router.push({path: `/player/${item.id}`})

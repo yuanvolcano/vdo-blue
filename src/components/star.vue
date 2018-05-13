@@ -46,15 +46,18 @@ export default {
       starData: [
         {
           title: '亚洲专区',
-          list: []
+          list: [],
+          text: '当前没有明星！'
         },
         {
           title: '欧美专区',
-          list: []
+          list: [],
+          text: '当前没有明星！'
         },
         {
           title: '原创专区',
-          list: []
+          list: [],
+          text: '当前没有明星！'
         }
       ],
       indexArr: [1, 1, 1]
@@ -88,7 +91,7 @@ export default {
     },
     loadStar (index) {
       this.starPage++
-      this._getStarList({type: index + 1, page: ++this.indexArr[index]})
+      this._getStarList({type: index + 1, page: ++this.indexArr[index], loadMore: true})
     },
     focusHandle () {
       this.$router.push('/search');
@@ -104,7 +107,9 @@ export default {
             this.starData[param.type - 1].list = result.data.starList
           } else {
             param.page--
-            toast('没有更多明星了哦', this.tips)
+            if (param.loadMore) {
+              toast('没有更多明星了哦', this.tips)
+            }
           }
         } else {
           toast(result.msg, this.tips);

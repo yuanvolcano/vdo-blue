@@ -51,15 +51,18 @@ export default {
       videoData: [
         {
           title: '最热电影',
-          list: []
+          list: [],
+          text: '当前没有电影！'
         },
         {
           title: '点赞最多',
-          list: []
+          list: [],
+          text: '当前没有电影！'
         },
         {
           title: '最新电影',
-          list: []
+          list: [],
+          text: '当前没有电影！'
         }
       ],
       indexArr: [1, 1, 1]
@@ -86,7 +89,7 @@ export default {
     },
     loadVdo (index) {
       this.videoPage++
-      this._getVideoList({type: index + 1, page: ++this.indexArr[index]})
+      this._getVideoList({type: index + 1, page: ++this.indexArr[index], loadMore: true})
     },
     getPlayer (item) {
       this.$router.push({
@@ -108,7 +111,9 @@ export default {
             this.videoData[param.type - 1].list = result.data.videoList
           } else {
             param.page--
-            toast('没有更多视频了哦', this.tips)
+            if (param.loadMore) {
+              toast('没有更多视频了哦', this.tips)
+            }
           }
         } else {
           toast(result.msg, this.tips)

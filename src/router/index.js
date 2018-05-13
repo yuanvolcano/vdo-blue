@@ -109,6 +109,18 @@ export default new Router({
       name: 'allMovie',
       meta: {requiresAuth: true},
       component: resolve => require(['components/all-movie'], resolve)
+    },
+    {
+      path: '/comments/:id',
+      name: 'comments',
+      meta: {requiresAuth: true},
+      component: resolve => require(['components/comments'], resolve)
+    },
+    {
+      path: '/test/:id',
+      name: 'test',
+      meta: {requiresAuth: true},
+      component: resolve => require(['components/test'], resolve)
     }
   ]
 })

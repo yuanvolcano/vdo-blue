@@ -1,27 +1,40 @@
 <template>
-  <div class="wrapper">
+  <div class="add-comment">
     <div class="box">
       <span class="edit edit-img"></span>
-      <input placeholder="写评论。。。" @focus="focus" v-model="value" class="edit-ipt" type="text">
+      <input placeholder="写评论。。。" v-model="value" class="edit-ipt" type="text">
     </div>
     <div class="publish" @click="publish">发表</div>
+    <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
   </div>
 </template>
 
 <script>
+import {Toast} from 'vux'
+import {toast} from 'base/util'
+
 export default {
+  components: {Toast},
   data () {
     return {
+      tips: {
+        show: false,
+        width: '25rem',
+        type: 'text',
+        position: 'middle',
+        text: ''
+      },
       value: ''
     }
   },
   methods: {
     publish () {
-      this.$emit('publish', this.value)
-      this.value = ''
-    },
-    focus () {
-      this.$emit('focus')
+      if (this.value.trim()) {
+        this.$emit('publish', this.value)
+        this.value = ''
+      } else {
+        toast('请输入相关评论！', this.tips)
+      }
     }
   }
 }
@@ -29,7 +42,7 @@ export default {
 
 <style lang="stylus" scoped>
 
-.wrapper
+.add-comment
   border-top 1px solid #ccc
   width 100%
   height 8.17rem
@@ -49,16 +62,19 @@ export default {
     align-items center
     .edit
       margin-left 1.5rem
-      width 3.08rem
-      height 3.08rem
+      width 2.38rem
+      height 2.38rem
     .edit-ipt
       height 3.08rem
       font-size 2.17rem
       line-height 3.08rem
-      padding 1rem 0
+      padding 1rem 0 1rem 1.67rem
       background #f4f5f7
       flex 1
       margin-right 3rem
+      &:hover
+        border none
+        outline none
   .publish
     margin 0 1.5rem
     width 8rem

@@ -2,14 +2,14 @@
   <div class="allMovie">
     <header-bar :title="title"></header-bar>
     <div class="body">
-      <tab class="tab" :line-width=0 active-color='#F55640' v-model="index">
-        <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list" @click="demo2 = item" :key="index">{{item}}</tab-item>
-      </tab>
-      <swiper :threshold="threshold" class="active" v-model="index" :height="setHeight" :show-dots="false">
-        <swiper-item class="swiper-item" v-for="(item, index) in list" :key="index">
-          <video-list @to-play="getPlayer" :items='videos[index]' @load="loadVdo"></video-list>
-        </swiper-item>
-      </swiper>
+      <scroll-nav :index="index" :height="height">
+        <scroll-nav-panel :label="item" v-for="(item, key) in list" :key="key">
+          <!-- 内容 -->
+          <p>{{item}}</p>
+          <video-list @to-play="getPlayer" :items='videos[key]' @load="loadVdo"></video-list>
+          <!-- 内容 -->
+        </scroll-nav-panel>
+      </scroll-nav>
       <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
       <loading v-model="loading" :text="text"></loading>
     </div>
@@ -19,17 +19,18 @@
 <script>
 import headerBar from './header'
 import videoList from './videoList'
-import {Tab, TabItem, Swiper, SwiperItem, Toast, Loading} from 'vux'
+import {Toast, Loading} from 'vux'
 import {getVideoSortList} from 'api'
 import {toast} from 'base/util'
 import {mapMutations} from 'vuex'
 import base from 'base/mixin'
+import {ScrollNav, ScrollNavPanel} from 'vue-ydui/dist/lib.rem/scrollnav'
 
 const list = () => ['最热', '点赞', '最新', '国内', '日本', '随机']
 const videoData = (n) => {
   let arr = []
   for (let i = 0; i < n; i++) {
-    let obj = {title: '', list: [], text: ''}
+    let obj = {title: '', list: [], text: '', loadMore: false}
     arr.push(obj)
   }
   return arr
@@ -44,16 +45,14 @@ export default {
   components: {
     headerBar,
     videoList,
-    Tab,
-    TabItem,
-    Swiper,
-    SwiperItem,
     Toast,
-    Loading
+    Loading,
+    ScrollNav,
+    ScrollNavPanel
   },
   data () {
     return {
-      threshold: 80,
+      height: '8rem',
       title: '电影',
       list: list(),
       index: 0,
@@ -76,16 +75,13 @@ export default {
   created () {
     this.index = Number(this.$route.params.id)
     for (let j = 0; j < 6; j++) {
-      this._getVideoSortList({type: j + 1, page: this.pagesArr[j]})
+      this._getVideoSortList({type: j + 1, page: this.pagesArr[j], loadMore: this.videos[j].loadMore})
     }
   },
   methods: {
     ...mapMutations({
       setVdoInfo: 'SET_VDOITEM'
     }),
-    clickToggle () {
-      // this._getVideoSortList({type: this.index + 1, page: this.pagesArr[this.index]})
-    },
     getPlayer (item) {
       this.$router.push({
         path: `/player/${item.id}`
@@ -93,24 +89,24 @@ export default {
       this.setVdoInfo(item)
     },
     loadVdo () {
-      this._getVideoSortList({type: this.index + 1, page: ++this.pagesArr[this.index]})
+      this._getVideoSortList({type: this.index + 1, page: ++this.pagesArr[this.index], loadMore: true})
     },
     _getVideoSortList (param = {}) {
       getVideoSortList._post({
         type: param.type,
         page: param.page,
-        rows: 9
+        rows: 10
       }).then(result => {
         this.videos[param.type - 1].list.length = 0
         if (result.status === 1) {
           if (result.data.videoList.length !== 0) {
             this.videos[param.type - 1].list = result.data.videoList
           } else {
-            param.page--
-            if (this.index === param.page - 1) {
+            param.page = 1;
+            if (param.loadMore) {
               toast('没有更多的电影了哦', this.tips)
             }
-            this.videos[param.type - 1].text = '没有找到小电影'
+            this.videos[param.type - 1].text = '没有找到小电影!'
           }
         } else {
           toast(result.msg, this.tips)
@@ -127,6 +123,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.body .yd-scrollnav
+  top 8.17rem
+.yd-scrollnav-tab-item
+  display flex
+.yd-scrollnav-tab-item > li
+  flex 0 0 20%
+
 .allMovie
   width 100%
   height 100%
@@ -135,8 +138,7 @@ export default {
   left 0
   top 0
   .body
-    margin-top 9.17rem
-    // background-color #ccc
+    padding-top 19.17rem
     .tab
       padding-bottom 1.5rem
       overflow-y hidden

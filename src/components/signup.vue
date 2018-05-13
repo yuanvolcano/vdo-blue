@@ -5,6 +5,13 @@
         <span>注册</span>
     </div>
     <div class="register-body">
+       <group class="group">
+        <x-input class="ipt" title="title" @on-focus="focus" v-model="name" type="email" placeholder="请输入昵称" is-type="email" required>
+           <div class="clearfix" slot="label">
+             <div class="user-email-img name-img"></div>
+           </div>
+        </x-input>
+      </group>
       <group class="group">
         <x-input class="ipt" title="title" @on-focus="focus" v-model="username" type="email" placeholder="请输入邮箱" is-type="email" required>
            <div class="clearfix" slot="label">
@@ -67,6 +74,7 @@ export default {
   },
   data () {
     return {
+      name: '',
       username: '',
       userpwd: '',
       repeatpwd: '',
@@ -86,7 +94,7 @@ export default {
   },
   computed: {
     disable () {
-      if (!this.username.trim() || !this.userpwd.trim() || !this.code.trim() || !this.repeatpwd.trim()) {
+      if (!this.name.trim() || !this.username.trim() || !this.userpwd.trim() || !this.code.trim() || !this.repeatpwd.trim()) {
         return true
       } else {
         return false
@@ -121,6 +129,8 @@ export default {
     validate () {
       this.tips.text = ''
       if (this.username.trim() === '') {
+        this.tips.text = '请输入昵称'
+      } else if (this.username.trim() === '') {
         this.tips.text = '请输入邮箱'
       } else if (!emailReg.test(this.username)) {
         this.tips.text = '请输入正确的邮箱'
@@ -144,6 +154,7 @@ export default {
       }
       this.loading = true
       regist._post({
+        name: this.name,
         email: this.username,
         password: this.userpwd,
         code: this.code

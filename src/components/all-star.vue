@@ -1,21 +1,21 @@
 <template>
-  <div class="wrapper">
+  <div class="all-star">
     <header-bar :title="title"></header-bar>
     <div class="body">
-       <tab class="tab" :line-width=0 active-color='#F55640' v-model="index">
+      <scroll-nav :index="index" :height="height">
+        <scroll-nav-panel :label="item" v-for="(item, key) in list" :key="key">
+          <!-- 内容 -->
+          <p>{{item}}</p>
+          <star-list @to-star="getStarer" :items='starData[key]' @load="loadStar"></star-list>
+          <!-- 内容 -->
+        </scroll-nav-panel>
+      </scroll-nav>
+       <!-- <tab class="tab" :line-width=0 active-color='#F55640' v-model="index">
         <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list" @click="demo2 = item" :key="index">{{item}}</tab-item>
       </tab>
       <swiper :threshold="threshold" v-model="index" :height="setHeight" :show-dots="false">
         <swiper-item v-for="(item, index) in list" :key="index">
            <star-list @to-star="getStarer" :items='starData[index]' @load="loadStar"></star-list>
-        </swiper-item>
-      </swiper>
-      <!-- <tab class="tab" :line-width=0 active-color='#F55640' v-model="index" ref="tabs">
-        <tab-item v-for="(item, index) in list" @on-item-click="clickToggle" @click="demo2 = item" :key="index">{{item}}</tab-item>
-      </tab>
-      <swiper :height="setHeight" v-model="index" :show-dots="false">
-        <swiper-item class="swiper-item" v-for="(item, index) in list" :key="index">
-          <star-list @to-star="getStarer" :items='starList' @load="loadStar"></star-list>
         </swiper-item>
       </swiper> -->
       <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
@@ -32,6 +32,7 @@ import {getStarSortList} from 'api'
 import {toast} from 'base/util'
 import {mapMutations} from 'vuex'
 import base from 'base/mixin'
+import {ScrollNav, ScrollNavPanel} from 'vue-ydui/dist/lib.rem/scrollnav'
 
 const list = () => ['最热', '最新', '亚洲', '欧美', '原创', '日本', '随机']
 const starData = (n) => {
@@ -57,11 +58,13 @@ export default {
     Swiper,
     SwiperItem,
     Toast,
-    Loading
+    Loading,
+    ScrollNav,
+    ScrollNavPanel
   },
   data () {
     return {
-      threshold: 80,
+      height: '8rem',
       title: '明星',
       list: list(),
       index: 0,
@@ -105,7 +108,7 @@ export default {
       this.setStarInfo(item)
     },
     loadStar () {
-      this._getStarSortList({type: this.index + 1, page: ++this.pagesArr[this.index]})
+      this._getStarSortList({type: this.index + 1, page: ++this.pagesArr[this.index], loadMore: true})
     },
     _getStarSortList (param = {}) {
       getStarSortList._post({
@@ -119,10 +122,10 @@ export default {
             this.starData[param.type - 1].list = result.data.starList
           } else {
             param.page--
-            if (this.index === param.page - 1) {
-              toast('没有更多的明星了哦', this.tips)
+            if (param.loadMore) {
+              toast('没有更多的电影了哦', this.tips)
             }
-            this.starData[param.type - 1].text = '没有找到明星'
+            this.starData[param.type - 1].text = '没有找到明星!'
           }
         } else {
           toast(result.msg, this.tips)
@@ -139,7 +142,14 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.wrapper
+.body .yd-scrollnav
+  top 8.17rem
+.yd-scrollnav-tab-item
+  display flex
+.yd-scrollnav-tab-item > li
+  flex 0 0 20%
+
+.all-star
   width 100%
   .body
     margin-top 9.17rem

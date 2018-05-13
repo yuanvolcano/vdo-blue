@@ -156,5 +156,6 @@ export default {
       text-align center
       font-size 2.83rem
       color #666
-      margin-top 2.5em
+      background-color #fff
+      padding 2rem 0
 </style>

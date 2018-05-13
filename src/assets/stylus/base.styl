@@ -2,12 +2,12 @@
 @import "mixin.styl"
 
 body, html
-  line-height: 1
-  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
-  user-select: none
-  -webkit-tap-highlight-color: transparent
-  background: $color-text
-  color: $color-text
+  line-height 1
+  font-family 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
+  user-select none
+  -webkit-tap-highlight-color transparent
+  background #fff !important
+  color $color-text
   height 100%
 
 .back, .back-black
@@ -74,11 +74,31 @@ body .vux-tab .vux-tab-item
 .vux-slider>.vux-swiper
   overflow auto !important
 
+.yd-scrollnav-content p
+  padding-left 2.33rem
+  font-size 2.83rem
+  background-color #fff
+
+.yd-scrollnav-tab-item
+  display flex
+
+.body .yd-scrollnav-tab-item > li
+  padding 0
+  flex 0 0 20%
+  text-align center !important
+
+.yd-scrollnav-tab-item > li span
+  font-size 2.83rem
+  justify-content center
+
 .back-black
   bg-image('../images/arrows')
 
 .pwd-img
   bg-image('../images/password')
+
+.name-img
+  bg-image('../images/name')
 
 .email-img
   bg-image('../images/email')
@@ -97,6 +117,7 @@ body .vux-tab .vux-tab-item
 
 .collect-img
   bg-image('../images/collect')
+
 
 .collect-active-img
   bg-image('../images/collect_pre')
@@ -174,6 +195,7 @@ body .vux-tab .vux-tab-item
 
 .edit-img
   bg-image('../images/edit')
+  extend-click()
 
 .logout-img
   bg-image('../images/logout')

@@ -72,6 +72,7 @@ export default {
       'login'
     ]),
     name () {
+      console.log(this.login)
       return this.login.name || '花花姑娘'
     },
     vip () {

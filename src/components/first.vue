@@ -76,5 +76,5 @@ export default {
     top 0
     z-index 100
   .banner
-    margin-top 5.08rem
+    padding-top 5.08rem
 </style>

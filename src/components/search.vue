@@ -45,12 +45,12 @@ export default {
           title: '历史搜索',
           del: true,
           list: ['濑亚美莉', '西游记', '濑亚美莉', '西游降魔篇', '冷面焊枪', '网吧天子', '濑亚美莉', '西游记']
-        },
+        } /* ,
         hot: {
           title: '历史搜索',
           del: true,
           list: ['濑亚美莉', '西游记', '濑亚美莉', '西游降魔篇', '冷面焊枪', '网吧天子', '濑亚美莉', '西游记']
-        }
+        } */
       },
       searchResult: {
         text: '当前搜索为空',
@@ -68,17 +68,17 @@ export default {
   },
   methods: {
     select (item) {
-      console.log(item)
       this.$router.push({path: `/player/${item.id}`})
     },
     searchQuery () {
       searchVideo._post({
-        content: this.query,
+        content: this.queryTrim,
         page: 1,
         rows: 50
       }).then(result => {
         if (result.status === 1) {
           this.searchResult.list = result.data.videoList
+          this.saveHistory();
         } else {
           toast(result.msg, this.tips);
           if (result.status === -1) {
@@ -98,7 +98,13 @@ export default {
     goBack () {
       this.$router.go(-1);
     },
-    clickQuery () {}
+    clickQuery () {},
+    saveHistory () {
+      let historyQuery = window.localStorage.getItem('query') || []
+      if (historyQuery.length < 11) {
+        historyQuery.push(this.queryTrim)
+      }
+    }
   },
   computed: {
     queryTrim () {
