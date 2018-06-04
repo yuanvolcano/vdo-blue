@@ -32,7 +32,7 @@
         <div class="attitude">
           <span :class="{'agree-active-img': vdoInfo.isClick > 0}" @click="_agreeClick" class="agree-img like"></span>
           <span :class="{'disagree-active-img': vdoInfo.isTread > 0}" @click="_disagreeClick" class="disagree-img dislike"></span>
-          <progress-bar :percent="vdoInfo.rate" class="progress"></progress-bar>
+          <progress-bar :percent="Number(vdoInfo.rate)" class="progress"></progress-bar>
         </div>
       </div>
     </div>
@@ -102,6 +102,11 @@ export default {
       },
       comments: []
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    // 设置下一个路由的 meta
+    to.meta.keepAlive = true // 让 A 缓存，即不刷新
+    next();
   },
   created () {
     this._getVideoContent(this.$route.params.id)
@@ -275,6 +280,7 @@ export default {
   width 100%
   background-color #fff
   .player
+    box-sizing content-box
     position relative
     width 100%
     height 35.17rem
@@ -302,6 +308,8 @@ export default {
       object-fit fill
     .vdo
       background-color #333
+      object-fit contain
+      object-position center
     video::-internal-media-controls-download-button
       display none
     video::-webkit-media-controls-enclosure

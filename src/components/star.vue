@@ -16,7 +16,7 @@ import searchBar from './search-bar'
 import {Swiper, Toast, Loading} from 'vux'
 import {toast, _getBanner} from 'base/util'
 import {getStarList} from 'api'
-import {mapMutations} from 'vuex'
+import {mapMutations, mapGetters} from 'vuex'
 
 export default {
   components: {
@@ -63,15 +63,20 @@ export default {
       indexArr: [1, 1, 1]
     }
   },
+  computed: {
+    ...mapGetters(['starIndex'])
+  },
   created () {
     _getBanner({position: 'star'}, this.list)
+    this.indexArr = this.starIndex
     for (let i = 1; i < 4; i++) {
-      this._getStarList({type: i, page: 1})
+      this._getStarList({type: i, page: this.indexArr[i - 1]})
     }
   },
   methods: {
     ...mapMutations({
-      setStarInfo: 'SET_STARITEM'
+      setStarInfo: 'SET_STARITEM',
+      setStarIndex: 'STAR_INDEX'
     }),
     next (index) {
       index = index + 2
@@ -88,6 +93,7 @@ export default {
         path: `/starer/${item.id}`
       })
       this.setStarInfo(item)
+      this.setStarIndex(this.indexArr)
     },
     loadStar (index) {
       this.starPage++

@@ -109,6 +109,7 @@ export default {
       }).then(result => {
         this.loading = false;
         if (result.status === 1) {
+          this.setLogin(result.data)
           window.sessionStorage.setItem('token', result.data.token)
           window.localStorage.setItem('userInfo', JSON.stringify({'username': this.username, 'userpwd': this.userpwd}))
           this.$router.replace({path: '/home/first'})

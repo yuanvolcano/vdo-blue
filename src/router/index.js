@@ -101,13 +101,13 @@ export default new Router({
     {
       path: '/allStar/:id',
       name: 'allStar',
-      meta: {requiresAuth: true},
+      meta: {requiresAuth: true, keepAlive: true},
       component: resolve => require(['components/all-star'], resolve)
     },
     {
       path: '/allMovie/:id',
       name: 'allMovie',
-      meta: {requiresAuth: true},
+      meta: {requiresAuth: true, keepAlive: true},
       component: resolve => require(['components/all-movie'], resolve)
     },
     {

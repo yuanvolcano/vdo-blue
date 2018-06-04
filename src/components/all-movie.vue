@@ -6,7 +6,7 @@
         <scroll-nav-panel :label="item" v-for="(item, key) in list" :key="key">
           <!-- 内容 -->
           <p>{{item}}</p>
-          <video-list @to-play="getPlayer" :items='videos[key]' @load="loadVdo"></video-list>
+          <video-list @to-play="getPlayer" :items='videos[key]' @load="loadVdo(key)"></video-list>
           <!-- 内容 -->
         </scroll-nav-panel>
       </scroll-nav>
@@ -22,7 +22,7 @@ import videoList from './videoList'
 import {Toast, Loading} from 'vux'
 import {getVideoSortList} from 'api'
 import {toast} from 'base/util'
-import {mapMutations} from 'vuex'
+import {mapMutations, mapGetters} from 'vuex'
 import base from 'base/mixin'
 import {ScrollNav, ScrollNavPanel} from 'vue-ydui/dist/lib.rem/scrollnav'
 
@@ -36,9 +36,9 @@ const videoData = (n) => {
   return arr
 }
 
-const clientHeight = document.body.clientHeight;
-const fontSize = document.documentElement.style.fontSize.replace(/px/, '')
-const setHeight = (clientHeight - fontSize * 14.67) + 'px'
+// const clientHeight = document.body.clientHeight;
+// const fontSize = document.documentElement.style.fontSize.replace(/px/, '')
+// const setHeight = (clientHeight - fontSize * 14.67) + 'px'
 
 export default {
   mixins: [base],
@@ -68,28 +68,39 @@ export default {
       },
       loading: false,
       text: '正在加载',
-      videos: videoData(6),
-      setHeight: setHeight
+      videos: videoData(6)
+      // setHeight: setHeight
     }
+  },
+  computed: {
+    ...mapGetters(['allMovieIndex'])
   },
   created () {
     this.index = Number(this.$route.params.id)
+    this.pagesArr = this.allMovieIndex
     for (let j = 0; j < 6; j++) {
       this._getVideoSortList({type: j + 1, page: this.pagesArr[j], loadMore: this.videos[j].loadMore})
     }
   },
   methods: {
     ...mapMutations({
-      setVdoInfo: 'SET_VDOITEM'
+      setVdoInfo: 'SET_VDOITEM',
+      setAllMovieIndex: 'ALLMOVIE_INDEX'
     }),
     getPlayer (item) {
       this.$router.push({
         path: `/player/${item.id}`
       })
       this.setVdoInfo(item)
+      this.setAllMovieIndex(this.pagesArr)
     },
-    loadVdo () {
-      this._getVideoSortList({type: this.index + 1, page: ++this.pagesArr[this.index], loadMore: true})
+    loadVdo (key) {
+      this._getVideoSortList({type: key + 1, page: ++this.pagesArr[key], loadMore: true})
+    },
+    _push (list, listData) {
+      for (let item of list) {
+        listData.push(item);
+      }
     },
     _getVideoSortList (param = {}) {
       getVideoSortList._post({
@@ -100,6 +111,7 @@ export default {
         this.videos[param.type - 1].list.length = 0
         if (result.status === 1) {
           if (result.data.videoList.length !== 0) {
+            // this._push(result.data.videoList, this.videos[param.type - 1].list);
             this.videos[param.type - 1].list = result.data.videoList
           } else {
             param.page = 1;

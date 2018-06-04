@@ -19,7 +19,7 @@ import searchBar from './search-bar'
 import {getRelateVideo} from 'api'
 import {Swiper, Toast, Loading} from 'vux'
 import {toast, _getBanner} from 'base/util'
-import {mapMutations} from 'vuex'
+import {mapMutations, mapGetters} from 'vuex'
 import base from 'base/mixin'
 
 export default {
@@ -59,15 +59,22 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['recommendMoviePage', 'recommendStarPage'])
+  },
   created () {
-    this._getRecommendVideo()
-    this._getRecommendStar()
+    this.videoPage = this.recommendMoviePage
+    this.starPage = this.recommendStarPage
+    this._getRecommendVideo({videoPage: this.videoPage, rows: this.rows})
+    this._getRecommendStar({starPage: this.starPage, rows: this.rows})
     _getBanner({position: 'recommend'}, this.list)
   },
   methods: {
     ...mapMutations({
       setStarInfo: 'SET_STARITEM',
-      setVdoInfo: 'SET_VDOITEM'
+      setVdoInfo: 'SET_VDOITEM',
+      setMoviePage: 'RECOMMEND_MOVIEPAGE',
+      setStarPage: 'RECOMMEND_STARPAGE'
     }),
     nextMovie () {
       this.$router.push({name: 'allMovie', params: {id: 2}})
@@ -91,12 +98,14 @@ export default {
         path: `/player/${item.id}`
       })
       this.setVdoInfo(item)
+      this.setMoviePage(this.videoPage)
     },
     getStarer (item) {
       this.$router.push({
         path: `/starer/${item.id}`
       })
       this.setStarInfo(item)
+      this.setStarPage(this.starPage)
     },
     _getRecommendVideo (param = {}) {
       param.loadmore && (this.loading = true)
@@ -110,7 +119,7 @@ export default {
           if (result.data.recommendVideo.length !== 0) {
             this.vdoItems.list = result.data.recommendVideo
           } else {
-            param.videoPage--
+            this.videoPage = 1
             if (param.loadmore) {
               toast('没有更多视频了哦', this.tips)
             }
@@ -129,7 +138,7 @@ export default {
       param.loadmore && (this.loading = true)
       getRelateVideo._post({
         type: 2,
-        page: param.starPage || this.starPage,
+        page: param.starPage || 1,
         rows: param.rows || 10
       }).then(result => {
         this.loading = false
@@ -137,7 +146,7 @@ export default {
           if (result.data.recommendStar.length !== 0) {
             this.starItems.list = result.data.recommendStar
           } else {
-            param.starPage--
+            this.starPage = 1
             if (param.loadmore) {
               toast('没有更多明星了哦', this.tips);
             }

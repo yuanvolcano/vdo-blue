@@ -6,18 +6,10 @@
         <scroll-nav-panel :label="item" v-for="(item, key) in list" :key="key">
           <!-- 内容 -->
           <p>{{item}}</p>
-          <star-list @to-star="getStarer" :items='starData[key]' @load="loadStar"></star-list>
+          <star-list @to-star="getStarer" :items='starData[key]' @load="loadStar(key)"></star-list>
           <!-- 内容 -->
         </scroll-nav-panel>
       </scroll-nav>
-       <!-- <tab class="tab" :line-width=0 active-color='#F55640' v-model="index">
-        <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list" @click="demo2 = item" :key="index">{{item}}</tab-item>
-      </tab>
-      <swiper :threshold="threshold" v-model="index" :height="setHeight" :show-dots="false">
-        <swiper-item v-for="(item, index) in list" :key="index">
-           <star-list @to-star="getStarer" :items='starData[index]' @load="loadStar"></star-list>
-        </swiper-item>
-      </swiper> -->
       <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
       <loading v-model="loading" :text="text"></loading>
     </div>
@@ -30,7 +22,7 @@ import starList from './starList'
 import {Tab, TabItem, Swiper, SwiperItem, Toast, Loading} from 'vux'
 import {getStarSortList} from 'api'
 import {toast} from 'base/util'
-import {mapMutations} from 'vuex'
+import {mapMutations, mapGetters} from 'vuex'
 import base from 'base/mixin'
 import {ScrollNav, ScrollNavPanel} from 'vue-ydui/dist/lib.rem/scrollnav'
 
@@ -44,9 +36,9 @@ const starData = (n) => {
   return arr
 }
 
-const clientHeight = document.body.clientHeight;
-const fontSize = document.documentElement.style.fontSize.replace(/px/, '')
-const setHeight = (clientHeight - fontSize * 14.67) + 'px'
+// const clientHeight = document.body.clientHeight;
+// const fontSize = document.documentElement.style.fontSize.replace(/px/, '')
+// const setHeight = (clientHeight - fontSize * 14.67) + 'px'
 
 export default {
   mixins: [base],
@@ -82,33 +74,42 @@ export default {
       starList: {
         list: []
       },
-      starData: starData(7),
-      setHeight: setHeight
+      starData: starData(7)
+      // setHeight: setHeight
     }
+  },
+  computed: {
+    ...mapGetters(['allStarIndex'])
   },
   created () {
     this.index = Number(this.$route.params.id)
+    this.pagesArr = this.allStarIndex
     for (let j = 0; j < 7; j++) {
       this._getStarSortList({type: j + 1, page: this.pagesArr[j]})
     }
   },
   methods: {
     ...mapMutations({
-      setStarInfo: 'SET_STARITEM'
+      setStarInfo: 'SET_STARITEM',
+      setAllStarIndex: 'ALLSTAR_INDEX'
     }),
     clickToggle () {
-      console.log(this.index)
       this._getStarSortList({type: this.index + 1, page: this.pagesArr[this.index]})
     },
     getStarer (item) {
-      console.log('n')
       this.$router.push({
         path: `/starer/${item.id}`
       })
       this.setStarInfo(item)
+      this.setAllStarIndex(this.pagesArr)
     },
-    loadStar () {
-      this._getStarSortList({type: this.index + 1, page: ++this.pagesArr[this.index], loadMore: true})
+    loadStar (key) {
+      this._getStarSortList({type: key + 1, page: ++this.pagesArr[key], loadMore: true})
+    },
+    _push (list, listData) {
+      for (let item of list) {
+        listData.push(item);
+      }
     },
     _getStarSortList (param = {}) {
       getStarSortList._post({
@@ -119,9 +120,10 @@ export default {
         this.starData[param.type - 1].list.length = 0
         if (result.status === 1) {
           if (result.data.starList.length !== 0) {
+            // this._push(result.data.starList, this.starData[param.type - 1].list);
             this.starData[param.type - 1].list = result.data.starList
           } else {
-            param.page--
+            param.page = 1
             if (param.loadMore) {
               toast('没有更多的电影了哦', this.tips)
             }

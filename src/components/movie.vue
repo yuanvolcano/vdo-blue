@@ -7,7 +7,9 @@
     </div>
     <toast v-model="tips.show" :type="tips.type" :width="tips.width" :position="tips.position" :text="tips.text"></toast>
     <loading v-model="loading" :text="text"></loading>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -18,7 +20,7 @@ import searchBar from './search-bar'
 import {Swiper, Toast, Loading} from 'vux'
 import {toast, _getBanner} from 'base/util'
 import {getVideoList} from 'api'
-import {mapMutations} from 'vuex'
+import {mapMutations, mapGetters} from 'vuex'
 import base from 'base/mixin'
 
 export default {
@@ -68,15 +70,20 @@ export default {
       indexArr: [1, 1, 1]
     }
   },
+  computed: {
+    ...mapGetters(['movieIndex'])
+  },
   created () {
     _getBanner({position: 'video'}, this.list)
+    this.indexArr = this.movieIndex
     for (let i = 1; i < 4; i++) {
-      this._getVideoList({type: i, page: 1})
+      this._getVideoList({type: i, page: this.indexArr[i - 1]})
     }
   },
   methods: {
     ...mapMutations({
-      setVdoInfo: 'SET_VDOITEM'
+      setVdoInfo: 'SET_VDOITEM',
+      setMovieIndex: 'MOVIE_INDEX'
     }),
     next (index) {
       this.$router.push({name: 'allMovie', params: {id: index}})
@@ -88,7 +95,6 @@ export default {
       this.$router.push({path: '/allMovie/0'})
     },
     loadVdo (index) {
-      this.videoPage++
       this._getVideoList({type: index + 1, page: ++this.indexArr[index], loadMore: true})
     },
     getPlayer (item) {
@@ -96,6 +102,7 @@ export default {
         path: `/player/${item.id}`
       })
       this.setVdoInfo(item)
+      this.setMovieIndex(this.indexArr)
     },
     focusHandle () {
       this.$router.push('/search');
